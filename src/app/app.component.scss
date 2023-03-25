@@ -1,0 +1,76 @@
+//
+
+body {
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  border: 10px solid red !important;
+
+  // Helps fonts on OSX looks more consistent with other systems
+  // Isn't currently in button styles due to performance concerns
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+//Contenedor general
+
+.cont-grid-general {
+  width: 100%;
+  .cont-toolbar {
+    //background-color: #009688;
+    background-color: #eeb516;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+}
+
+.cont-toolbar {
+  mat-toolbar {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: transparent;
+    color: #FFF;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.titulo-toolbar {
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-weight: 100;
+}
+
+.toolbar-tot-admin {
+  //max-width:1000px;
+  //width: 90%;
+  margin: 0 auto;
+}
+
+.nombre-usuario {
+  display: inline-block;
+  margin-right: 0;
+  margin-left: 5px;
+  //margin-top: 5px;
+  height: 40px;
+  .mat-icon {
+  }
+}
+
+.cont-toolbar {
+  .mat-button {
+    padding-right: 0 !important;
+  }
+}
+
+.btn-exit {
+  color: rgba(255, 255, 255, .5);
+}
+
+@media only screen and (min-width: 320px) and (max-width: 991px) {
+  .cont-toolbar {
+    img {
+      width: 140px;
+    }
+  }
+}

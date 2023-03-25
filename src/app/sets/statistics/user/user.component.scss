@@ -1,0 +1,256 @@
+$grey-color:#707070;
+$greyLight-color:#EDEDED;
+$green-color:#4DB37D;
+$red-color:#EE3516;
+$yellow-color:#EEB532;
+$orange-color: #e28c1a;
+
+.container{
+    margin: 15px;
+
+    a.btn-volver {
+        text-transform: uppercase;
+        color: $grey-color;
+        text-decoration: none;
+        span.material-icons {
+            transform: translate(0px, 6px);
+            font-size: 20px;
+        }
+    }
+
+    .rendimineto-general{
+        padding: 30px 40px;
+        margin: 30px 0;
+        h2.titulo{
+            font-size: 1.8rem;
+            color: $grey-color;
+            margin: 0;
+        }
+        h3.titulo{
+            font-size: 1.4rem;
+            color: $grey-color;
+            text-align: right;
+            margin: 0;
+        }
+        .usuario{
+            display: inline-flex;
+            align-items: center;
+            padding: 20px 0;
+            width: 30%;
+            border-right: solid 1px $greyLight-color;
+        }
+        .imagen-usuario{
+            display: inline-block;
+            width: 30%;
+            padding: 0 20px 0 0;
+            img{
+                width: 100%;
+            }
+        }
+        .datos-usuario {
+            display: inline-block;
+            p.nombre-usuario{
+                text-transform: uppercase;
+                color: $orange-color;
+                font-size: 1.2rem;
+                margin-bottom: 5px;
+            }
+        
+            p.email-usuario{
+                color: $orange-color;
+                font-size: .9rem;
+                opacity: .54;
+                line-height: 0;
+            }
+        }
+        .total-respuestas{
+            display: flex;
+            width: 70%;
+            h2, p{
+                margin: 0;
+                text-transform: uppercase;
+            }
+            p {
+                line-height: 1.2rem;
+            }
+            .porcentaje{
+                width: 50%;
+                margin: 2% 2% 2% 12%;
+                padding: 20px;
+                background-color: $greyLight-color;
+                color: $grey-color;
+                background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="darkgray" width="18px" height="18px"><path d="M0 0h24v24H0z" fill="none"/><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>');
+                background-position: 100% 90%;
+                background-repeat: no-repeat;
+                background-size: 40%;
+            }
+
+            .correctas{
+                width: 25%;
+                margin: 2%;
+                padding: 20px;
+                background-color: $green-color;
+                color: white;
+                background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M24 24H0V0h24v24z" fill="none"/><path fill="seagreen" d="M2 20h2c.55 0 1-.45 1-1v-9c0-.55-.45-1-1-1H2v11zm19.83-7.12c.11-.25.17-.52.17-.8V11c0-1.1-.9-2-2-2h-5.5l.92-4.65c.05-.22.02-.46-.08-.66-.23-.45-.52-.86-.88-1.22L14 2 7.59 8.41C7.21 8.79 7 9.3 7 9.83v7.84C7 18.95 8.05 20 9.34 20h8.11c.7 0 1.36-.37 1.72-.97l2.66-6.15z"/></svg>');
+                background-position: 90% 90%;
+                background-repeat: no-repeat;
+                background-size: 50%;
+                
+            }
+            .incorrectas{
+                width: 25%;
+                margin: 2%;
+                padding: 20px;
+                background-color: $red-color;
+                color: white;
+                background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M24 24H0V0h24v24z" fill="none"/><path fill="brown" d="M22 4h-2c-.55 0-1 .45-1 1v9c0 .55.45 1 1 1h2V4zM2.17 11.12c-.11.25-.17.52-.17.8V13c0 1.1.9 2 2 2h5.5l-.92 4.65c-.05.22-.02.46.08.66.23.45.52.86.88 1.22L10 22l6.41-6.41c.38-.38.59-.89.59-1.42V6.34C17 5.05 15.95 4 14.66 4h-8.1c-.71 0-1.36.37-1.72.97l-2.67 6.15z"/></svg>');
+                background-position: 90% 80%;
+                background-repeat: no-repeat;
+                background-size: 50%;
+            }
+        }
+    }
+    .rendimineto-categorias{
+        padding: 30px 40px;
+        margin-bottom: 30px;
+        h2.titulo{
+            font-size: 1.8rem;
+            color: $grey-color;
+            margin: 0;
+        }
+        .card-categoria{
+            width: 47%;
+            margin: 10px 15px;
+            display: inline-block;
+            h3.titulo{
+                text-transform: uppercase;
+                color: $orange-color;
+                font-size: 1.2rem;
+                margin-bottom: 10px;
+                line-height: 1.2rem;
+            }
+            .preguntas-categorias{
+                background-color: $greyLight-color;
+                padding: 15px 20px;
+                justify-content: space-between;
+                display: flex;
+                .correctas{
+                    color: $green-color;
+                    h2{
+                        margin: 0;
+                        display: inline-block;
+                        font-size: 2.2rem;
+                        line-height: 2rem;
+                    }
+                    span{
+                        font-size: 1.3rem;
+                    }
+                    p{
+                        text-transform: uppercase;
+                        line-height: 1rem;
+                        font-size: .8rem;
+                        margin: 0;
+                    }
+                }
+                .incorrectas{
+                    color: $red-color;
+                    h2{
+                        margin: 0;
+                        display: inline-block;
+                        font-size: 2.2rem;
+                        line-height: 2rem;
+                    }
+                    span{
+                        font-size: 1.3rem;
+                    }
+                    p{
+                        text-transform: uppercase;
+                        line-height: 1rem;
+                        font-size: .8rem;
+                        margin: 0;
+                    }
+                }
+                .preguntas, .tiempo{
+                    color: $grey-color;
+                    h2{
+                        margin: 0;
+                        display: inline-block;
+                        font-size: 2.2rem;
+                        line-height: 2rem;
+                    }
+                    span{
+                        font-size: 1.3rem;
+                    }
+                    p{
+                        text-transform: uppercase;
+                        line-height: 1rem;
+                        font-size: .8rem;
+                        margin: 0;
+                    }
+                }
+            }
+        }
+        
+    }
+}
+
+.d-flex{
+    display: flex;
+}
+.bg-white{
+    background-color: white;
+}
+
+.star-color{
+    color: $yellow-color;
+    font-size: 1.5rem;
+}
+
+.opacity-20{
+    opacity: .20;
+}
+
+.rounded-circle{
+    border-radius: 50%;
+}
+
+.font-weight-bold{
+    font-weight: bold;
+}
+
+@media (max-width: 460px){
+    .container{
+        .rendimineto-general{
+            .usuario{
+                width: 100%;
+                border-right: none;
+                border-bottom: solid 1px #EDEDED;
+            }
+            .total-respuestas{
+                display: inline-block;
+                width: 100%;
+                .porcentaje{
+                    width: 87%;
+                    margin: 8% 0 2% 0;
+                }
+                .correctas, .incorrectas{
+                    width: 36.4%;
+                    margin: 0;
+                    display: inline-block;
+                }
+            }
+        }
+        .rendimineto-categorias{
+            .card-categoria{
+                width: 100%;
+                margin: 0;
+                display: inline-block;
+            }
+        }
+    }
+    .d-flex{
+        display: block;
+    }
+
+    
+}

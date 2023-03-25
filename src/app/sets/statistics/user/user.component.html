@@ -1,0 +1,101 @@
+<div class="container" *ngIf="loadComplete">
+  <a href="javascript:history.back()" class="btn-volver">
+    <span class="material-icons">
+      arrow_back
+    </span> volver
+  </a>
+
+  <div class="rendimineto-general bg-white">
+    <h2 class="titulo">Rendimiento del alumno</h2>
+    <h3 class="titulo" *ngIf="lastUpdateDate">Última actualización: {{lastUpdateDate | date: 'dd/MM/yyyy HH:mm'}}</h3>
+    <div class="d-flex">
+      <div class="usuario">
+        <div class="imagen-usuario">
+          <img src="{{user?.fotoPerfil}}" alt="Imagen usuario" class="rounded-circle">
+        </div>
+        <div class="datos-usuario">
+          <div class="stars" *ngIf="stats.ratio > 0">
+            <span class="material-icons star-color" [ngClass]="{ 'opacity-20': opaqueStars.length > 4}">
+              grade
+            </span>
+            <span class="material-icons star-color" [ngClass]="{ 'opacity-20': opaqueStars.length > 3}">
+              grade
+            </span>
+            <span class="material-icons star-color" [ngClass]="{ 'opacity-20': opaqueStars.length > 2}">
+              grade
+            </span>
+            <span class="material-icons star-color" [ngClass]="{ 'opacity-20': opaqueStars.length > 1}">
+              grade
+            </span>
+            <span class="material-icons star-color" [ngClass]="{ 'opacity-20': opaqueStars.length > 0}">
+              grade
+            </span>
+          </div>
+          <p class="nombre-usuario">{{user?.name}}</p>
+          <p class="email-usuario">{{user?.email}}</p>
+        </div>
+      </div>
+
+      <div class="total-respuestas">
+        <div class="porcentaje">
+          <h2>{{stats?.ratio}}%</h2>
+          <p>Porcentaje<br>de acierto</p>
+        </div>
+        <div class="correctas">
+          <h2>{{stats?.correct}}</h2>
+          <p>Respuestas<br>correctas</p>
+        </div>
+        <div class="incorrectas">
+          <h2>{{stats?.incorrect}}</h2>
+          <p>Respuestas<br>incorrectas</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rendimineto-categorias bg-white">
+    <h2 class="titulo">Tu rendimiento general</h2>
+
+    <div *ngFor="let category of categories" class="card-categoria">
+      <h3 class="titulo">{{category.name}}</h3>
+      <div class="preguntas-categorias">
+        <div class="correctas">
+          <h2>{{category.correct}}</h2>
+          <span class="material-icons">
+            thumb_up_alt
+          </span>
+          <p>Correctas</p>
+        </div>
+
+        <div class="incorrectas">
+          <h2>{{category.incorrect}}</h2>
+          <span class="material-icons">
+            thumb_down_alt
+          </span>
+          <p>Incorrectas</p>
+        </div>
+
+        <div class="tiempo">
+          <h2>{{category.seg}}</h2>
+          <span class="font-weight-bold">
+            s
+          </span>
+          <p>Tiempo</p>
+        </div>
+
+        <div class="preguntas">
+          <h2>{{category.total}}</h2>
+          <span class="material-icons">
+            article
+          </span>
+          <p>Preguntas</p>
+        </div>
+
+        <div *ngIf="this.setMode !== 'practica'" class="preguntas">
+          <h2>{{category.userAttempts}}/{{this.setAttempts}}</h2>
+          <p>Intentos</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

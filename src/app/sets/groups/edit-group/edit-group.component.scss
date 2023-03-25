@@ -1,0 +1,43 @@
+md-spinner {
+  height: 12px;
+  width: 12px;
+}
+
+h3 {
+  font-size: 24px;
+  font-weight: 100;
+  color: #999;
+  //border-bottom:1px solid #DDD;
+  .nombre-grupo {
+    color: #666;
+    font-weight: 500;
+  }
+}
+
+mat-form-field {
+  width: calc(100% - 100px);
+}
+
+.edit-group{
+  width: 100%;
+  mat-form-field{
+    width: 100%;
+  }
+  .button-row{
+    text-align: right;
+  }
+}
+
+button {
+  transition: all .3s ease-out;
+  &:last-child {
+    .material-icons {
+      color: red;
+    }
+  }
+  &:hover {
+    .material-icons {
+      opacity: 1;
+    }
+  }
+}

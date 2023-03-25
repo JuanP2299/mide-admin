@@ -1,0 +1,441 @@
+<!--<div class="cont-loading">
+  <ngx-loading [show]="!loadComplete" [config]="{ backdropBorderRadius: '2px', fullScreenBackdrop: true}"></ngx-loading>
+</div>
+<div class="cont-grid-general" *ngIf="loadComplete">
+
+  <div class="contenido">
+
+    <div class="cont-submenu">
+
+
+      <div fxLayout.xs="row" fxLayoutWrap="wrap" fxFlexFill fxLayoutAlign="space-between center">
+
+        <div class="flex-item" fxFlex="25%">
+          <mat-chip-list>
+            <mat-chip (click)="changeInfo(1)" [color]="typeInfo === 1 ? 'primary' :  'default'" selected="true">
+              Actividad
+            </mat-chip>
+            <mat-chip mat-raised-button (click)="changeInfo(2)" [color]="typeInfo === 2 ? 'primary' :  'default'"
+                      selected="true">Perfiles
+            </mat-chip>
+            <mat-chip mat-raised-button (click)="changeInfo(3)" [color]="typeInfo === 3 ? 'primary' :  'default'"
+                      selected="true">Ranking
+            </mat-chip>
+          </mat-chip-list>
+        </div>
+
+        <div class="flex-item" fxFlex="75%">
+          <mat-list class="button-dates">
+            <mat-list-item>
+              <div class="button-row" *ngIf="typeInfo!==3">
+                <button mat-button [color]="day === 7 ? 'primary' :  'default'" (click)="selectDays(7)">Ultimos 7 días
+                </button>
+                <button mat-button [color]="day === 30 ? 'primary' :  'default'" (click)="selectDays(30)">Ultimos 30
+                  días
+                </button>
+                <button mat-button [color]="day === 0 ? 'primary' :  'default'" (click)="selectDays(0)">Desde el
+                  comienzo
+                </button>
+              </div>
+              <button mat-mini-fab (click)="updateCharts()" color="primary" matTooltip="Actualizar Estadísticas"><i
+                class="material-icons">refresh</i></button>
+            </mat-list-item>
+          </mat-list>
+        </div>
+
+
+      </div>
+    </div>
+    <div>
+    </div>
+
+    <div *ngIf="typeInfo === 1">
+      <div fxLayout.xs="row" fxLayoutWrap="wrap" fxLayoutAlign.xs="start" fxLayoutAlign="space-between stretch"
+           fxLayoutGap="10px"
+           fxFlexFill>
+
+        <div fxLayout.xs="row" fxLayoutAlign="center" fxLayoutGap="10px" fxFlexFill>
+          <mat-card fxFlex>
+            <mat-card-header>
+              <h4 class="titulo-tot-admin">Actividad(Respuestas por día)</h4>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="cont_chart1_fix">
+                <google-chart [data]="activitiesData" *ngIf="chartActShow"></google-chart>
+                <h4 *ngIf="!chartActShow" class="mensaje-info"> No existe información relacionada</h4>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div fxLayout.xs="row" fxLayoutAlign="center" fxLayoutGap="10px" fxFlexFill>
+          <mat-card fxFlex>
+            <mat-card-header>
+              <ngx-loading [show]="!loadChartLineUser" [config]="{ backdropBorderRadius: '2px' }"></ngx-loading>
+              <h4 class="titulo-tot-admin">Nuevos usuarios registrados por día</h4>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="cont_chart1_fix">
+                <google-chart [data]="userCantChartData" *ngIf="chartLineUserShow"></google-chart>
+                <h4 *ngIf="!chartLineUserShow && loadChartLineUser" class="mensaje-info"> No existe información relacionada</h4>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <!-- chart1 
+        <mat-card fxFlex="50%">
+          <mat-card-header>
+            <ngx-loading [show]="!loadChartLineUser" [config]="{ backdropBorderRadius: '2px' }"></ngx-loading>
+            <h4 class="titulo-tot-admin">Tipos de usuarios</h4>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="cont_chart1">
+              <google-chart [data]="userChartData" *ngIf="chartLineUserShow"></google-chart>
+              <h4 *ngIf="!chartLineUserShow && loadChartLineUser" class="mensaje-info"> No existe información relacionada</h4>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <!-- chart1 -->
+
+        <!-- chart2 
+        <mat-card fxFlex="50%">
+          <mat-card-header>
+            <ngx-loading [show]="!loadChartCupons" [config]="{ backdropBorderRadius: '2px' }"></ngx-loading>
+            <h4 class="titulo-tot-admin">Uso de cupones</h4>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="cont_chart1">
+              <google-chart [data]="pieChartData" *ngIf="showChartCupons"></google-chart>
+              <h4 *ngIf="!showChartCupons && loadChartCupons" class="mensaje-info"> No existe información relacionada</h4>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <!-- chart2 
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Type 2 Info Start
+  <div *ngIf="typeInfo===2">
+    <mat-card>
+      <mat-card-header>
+        <ngx-loading [show]="!loadChartLineUser" [config]="{ backdropBorderRadius: '2px', fullScreenBackdrop: true}"></ngx-loading>
+        <h4 class="titulo-tot-admin">Filtros</h4>
+      </mat-card-header>
+      <mat-card-content class="cont-filtros">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0" fxFlexFill>
+          <div fxFlex="30" class="total-usuarios">
+            <h1>
+              {{filterUsers.length}}
+              <small>
+                Total de usuarios
+              </small>
+            </h1>
+            <ul class="lista-filtros">
+              <li *ngIf="filters.type !== ''">
+                <strong>Tipo de usuario:</strong> {{filters.type === 'student' ? 'Estudiante' : (filters.type === 'profesional' ? 'Profesional' : 'Otros')}}
+              </li>
+              <li *ngIf="filters.studyCountry !== ''">
+                <strong>País de estudio:</strong> {{filters.studyCountry}}
+              </li>
+              <li *ngIf="filters.university !== ''">
+                <strong>Universidad:</strong> {{filters.university}}
+              </li>
+              <li *ngIf="filters.profession !== ''">
+                <strong>{{filters.type === 'student' ? 'Carrera' : 'Profesión'}}:</strong> {{filters.profession}}
+              </li>
+              <li *ngIf="filters.year !== ''">
+                <strong>{{filters.type === 'student' ? 'Año' : 'Año de egreso'}}:</strong> {{filters.year}}
+              </li>
+            </ul>
+          </div>
+          <div fxFlex="70" class="cont-tablas-filtros">
+            <table class="tabla-filtro">
+              <thead>
+              <tr>
+                <th>Tipo de usuario</th>
+                <th>Cantidad</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr (click)="selectType({name: ''})" [ngClass]="{'selected': filters.type === ''}">
+                <td>Todos</td>
+                <td>{{filterUsers.length}}</td>
+              </tr>
+              <tr *ngFor="let type of types" (click)="selectType(type)"
+                  [ngClass]="{'selected': filters.type === type.name}">
+                <td>
+                  {{type.name === 'student' ? 'Estudiante' : (type.name === 'profesional' ? 'Profesional' : 'Otros')}}
+                </td>
+                <td>{{type.count}}</td>
+              </tr>
+              </tbody>
+            </table>
+            <table *ngIf="filters.type === 'student' || filters.type === 'profesional'" class="tabla-filtro">
+              <thead>
+              <tr>
+                <th>País</th>
+                <th>Cantidad</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr
+                *ngFor="let country of studyCountries | paginate: {itemsPerPage: pagination.quantity, currentPage: pagination.countries, id: 'pagination-countries'}"
+                (click)="selectStudyCountry(country)"
+                [ngClass]="{'selected': filters.studyCountry === country.name}">
+                <td>{{country.name}}</td>
+                <td>{{country.count}}</td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <td colspan="2">
+                  <pagination-controls (pageChange)="setPagination('countries', $event)" id="pagination-countries"
+                                       autoHide="true"
+                                       previousLabel="Anterior"
+                                       nextLabel="Próximo"
+                                       screenReaderPaginationLabel="Paginación"
+                                       screenReaderPageLabel="pag"></pagination-controls>
+                </td>
+              </tr>
+              </tfoot>
+            </table>
+            <table
+              *ngIf="(filters.type === 'student' || filters.type === 'profesional') && filters.studyCountry !== ''"
+              class="tabla-filtro">
+              <thead>
+              <tr>
+                <th>Universidad</th>
+                <th>N° Usuarios</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr
+                *ngFor="let university of universities | paginate: {itemsPerPage: pagination.quantity, currentPage: pagination.universtities, id: 'pagination-universities'}"
+                (click)="selectUniversity(university)"
+                [ngClass]="{'selected': filters.university === university.name}">
+                <td>{{university.name}}</td>
+                <td>{{university.count}}</td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <td colspan="2">
+                  <pagination-controls (pageChange)="setPagination('universities', $event)" id="pagination-universities"
+                                       autoHide="true"
+                                       previousLabel="Anterior"
+                                       nextLabel="Próximo"
+                                       screenReaderPaginationLabel="Paginación"
+                                       screenReaderPageLabel="pag"></pagination-controls>
+                </td>
+              </tr>
+              </tfoot>
+            </table>
+            <table
+              *ngIf="(filters.type === 'student' || filters.type === 'profesional') && filters.studyCountry !== '' && filters.university !== ''"
+              class="tabla-filtro">
+              <thead>
+              <tr>
+                <th>Profesión</th>
+                <th>N° Usuarios</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr
+                *ngFor="let profession of professions | paginate: {itemsPerPage: pagination.quantity, currentPage: pagination.professions, id: 'pagination-professions'}"
+                (click)="selectProfession(profession)"
+                [ngClass]="{'selected': filters.profession === profession.name}">
+                <td>{{profession.name}}</td>
+                <td>{{profession.count}}</td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <td colspan="2">
+                  <pagination-controls (pageChange)="setPagination('professions', $event)" id="pagination-professions"
+                                       autoHide="true"
+                                       previousLabel="Anterior"
+                                       nextLabel="Próximo"
+                                       screenReaderPaginationLabel="Paginación"
+                                       screenReaderPageLabel="pag"></pagination-controls>
+                </td>
+              </tr>
+              </tfoot>
+            </table>
+            <table
+              *ngIf="(filters.type === 'student' || filters.type === 'profesional') && filters.studyCountry !== '' && filters.university !== '' && filters.profession !== ''"
+              class="tabla-filtro">
+              <thead>
+              <tr>
+                <th>Año</th>
+                <th>N° Usuarios</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr
+                *ngFor="let year of years | paginate: {itemsPerPage: pagination.quantity, currentPage: pagination.years, id: 'pagination-years'}"
+                (click)="selectYear(year)"
+                [ngClass]="{'selected': filters.year === year.name}">
+                <td>{{year.name}}</td>
+                <td>{{year.count}}</td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <td colspan="2">
+                  <pagination-controls (pageChange)="setPagination('years', $event)" id="pagination-years"
+                                       autoHide="true"
+                                       previousLabel="Anterior"
+                                       nextLabel="Próximo"
+                                       screenReaderPaginationLabel="Paginación"
+                                       screenReaderPageLabel="pag"></pagination-controls>
+                </td>
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <!--  <div fxFlex fxGrow>
+              Total de usuarios: {{filterUsers.length}}
+            </div>
+        </div>
+      </mat-card-content>
+      <mat-card-footer>
+
+      </mat-card-footer>
+
+    </mat-card>
+  </div>
+
+  <!-- Type 2 Info  END-->
+
+  <!-- Type 3 Info  START
+  <div *ngIf="typeInfo === 3">
+    <div fxLayout.xs="row" fxLayoutWrap="wrap" fxLayoutAlign.xs="start" fxLayoutAlign="space-between stretch"
+         fxLayoutGap="10px"
+         fxFlexFill>
+      <!--start. Col 1
+      <mat-card class="topStats resp-correcta" fxFlex="100%" fxFlex.gt-md="24%">
+        <mat-card-content>
+          <ngx-loading [show]="!loadTableCorrect" [config]="{ backdropBorderRadius: '2px' }"></ngx-loading>
+          <h4>Más veces <br>contestada correctamente</h4>
+          <table>
+            <thead>
+            <tr>
+              <th>Posición</th>
+              <th>N°</th>
+              <th>Veces</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of topAnsTrue; index as i" (click)="showQuestion(item)">
+              <td>{{i+1}}</td>
+              <td>{{item.number}}</td>
+              <td>{{item.count}}</td>
+            </tr>
+            <tr *ngIf="topAnsTrue.length === 0">
+              <td class="mensaje-tabla" colspan="3">
+                <h4>No Existe información relacionada.</h4>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="topStats resp-incorrecta" fxFlex="100%" fxFlex.gt-md="24%">
+        <mat-card-content>
+          <ngx-loading [show]="!loadTableIncorrect" [config]="{ backdropBorderRadius: '2px' }"></ngx-loading>
+          <h4>Más veces <br>contestada incorrectamente</h4>
+          <table>
+            <thead>
+            <tr>
+              <th>Posición</th>
+              <th>N°</th>
+              <th>Veces</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of topAnsFalse; index as i" (click)="showQuestion(item)">
+              <td>{{i+1}}</td>
+              <td>{{item.number}}</td>
+              <td>{{item.count}}</td>
+            </tr>
+            <tr *ngIf="topAnsFalse.length === 0">
+              <td class="mensaje-tabla" colspan="3">
+                <h4>No Existe información relacionada.</h4>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+      <!--end. Col 1-->
+      <!--start. Col 2-->
+      <mat-card class="topStats resp" fxFlex="100%" fxFlex.gt-md="24%">
+        <!--<mat-card-header>-->
+        <!--</mat-card-header
+          
+        <mat-card-content>
+          <ngx-loading [show]="!loadTableComent" [config]="{ backdropBorderRadius: '2px' }"></ngx-loading>
+          <h4>Más veces <br>comentada</h4>
+          <table>
+            <thead>
+            <tr>
+              <th>Posición</th>
+              <th>N°</th>
+              <th>Veces</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of topComments; index as i" (click)="showQuestion(item)">
+              <td>{{i+1}}</td>
+              <td>{{item.number}}</td>
+              <td>{{item.count}}</td>
+            </tr>
+            <tr *ngIf="topComments.length === 0">
+              <td class="mensaje-tabla" colspan="3">
+                <h4>No Existe información relacionada.</h4>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="topStats resp" fxFlex="100%" fxFlex.gt-md="24%" >
+        <mat-card-content>
+          <h4>Más veces <br>marcada favorita</h4>
+          <ngx-loading [show]="!loadTableFavorite" [config]="{ backdropBorderRadius: '2px' }"></ngx-loading>
+          <table>
+            <thead>
+            <tr>
+              <th>Posición</th>
+              <th>N°</th>
+              <th>Veces</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of topLikeComments; index as i" (click)="showQuestion(item)">
+              <td>{{i+1}}</td>
+              <td>{{item.number}}</td>
+              <td>{{item.count}}</td>
+            </tr>
+            <tr *ngIf="topLikeComments.length === 0">
+              <td class="mensaje-tabla" colspan="3">
+                <h4>No Existe información relacionada.</h4>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+      <!--end. Col 2
+    </div>
+  </div>
+
+</div>-->

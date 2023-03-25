@@ -1,0 +1,54 @@
+<div *ngIf="active">
+
+  <!-- -->
+  <div *ngIf="!exist">
+    <h3>
+      <mat-icon class="mat-24">delete</mat-icon>
+      Eliminar {{typeChange}}</h3>
+    <p>¿Está seguro de eliminar la {{typeChange}} seleccionada?</p>
+
+    <div class="button-row">
+      <button mat-button color="warn"
+              (click)="deleteChange()" *ngIf="!exist && ! change">
+        Eliminar {{typeChange}}
+      </button>
+      <!-- -->
+      <button mat-button color="warn"
+              (click)="createdAction()" *ngIf="!exist && change">
+        <mat-icon mat-tooltip="Eliminar">delete</mat-icon>
+        Eliminar {{typeChange}}
+      </button>
+      <!-- -->
+      <button  mat-button (click)="closeDialog(false)">
+        Cancelar
+      </button>
+    </div>
+  </div>
+
+  <!-- -->
+  <div *ngIf="change && exist">
+    <h3>
+      <mat-icon class="mat-24">delete</mat-icon>
+      Eliminar/descartar {{typeChange}}
+    </h3>
+    <div class="button-row">
+      <button mat-button color="warn"
+              (click)="deleteChange()">
+        Descartar todos los cambios de esta {{typeChange === 'categoria' ?  'categoría' : 'pregunta'}}
+      </button>
+      <button mat-button color="warn"
+              (click)="saveChange()" *ngIf="!activeUpdateCat">
+        Eliminar {{typeChange}}
+      </button>
+      <button  mat-button (click)="closeDialog(false)">
+        Cancelar
+      </button>
+    </div>
+  </div>
+
+  <!-- -->
+</div>
+<div *ngIf="!active" class="text-center">
+  <mat-spinner></mat-spinner>
+  <p>Eliminando...</p>
+</div>

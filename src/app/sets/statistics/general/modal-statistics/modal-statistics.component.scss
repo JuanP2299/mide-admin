@@ -1,0 +1,166 @@
+.correct{
+  color: green;
+  font-weight: bold;
+}
+
+.content-question{
+  height: 100%;
+  width:90%;
+  margin: 0 auto;
+  margin-top: 30px;
+  //align-self:center;
+  h3{
+    //text-transform: uppercase;
+    font-size: 20px;
+    color: #666;
+    letter-spacing:1px;
+    line-height: 1.4;
+  }
+  ul{
+    padding-left: 20px;
+  }
+}
+
+.cont-btn-dates{
+  display: flex;
+  margin-top: 15px;
+  justify-content: space-between;
+  width: 100%;
+  padding: 15px 0;
+  height: 30px;
+  //border: 1px solid red;
+  .breadcrumb{
+    align-self: flex-start;
+    cursor: pointer;
+    //font-size: 12px;
+    a{
+      color: #0C776F;
+      cursor: pointer;
+      transition: all .3s ease-out;
+      &:hover{
+        color: #ff4081;
+      }
+    }
+    //width: 500px;
+  }
+  .button-dates{
+    align-self: flex-end;
+    li{
+
+    }
+  }
+}
+mat-card-header{
+  h3{
+    font-size: 16px;
+    margin: 0;
+    //font-size: 12px;
+  }
+}
+.example-card {
+  width: 400px;
+}
+
+.example-header-image {
+  background-size: cover;
+}
+
+.user-avatar{
+  width: 30px;
+  height:30px;
+  border-radius:30px;
+  display: inline-block;
+  float: left;
+}
+.nombre-mensaje{
+  width: calc(100% - 40px);
+  margin-left: 5px;
+  margin-top: 0;
+  text-transform: uppercase;
+  display: inline-block;
+  font-size: 1rem;
+  color: #666;
+  line-height: 1;
+}
+.datos-mensaje{
+  display: block;
+  border-bottom: 1px solid #DDD;
+  padding-bottom: 10px;
+  color: #666;
+  span{
+    margin-left: 10px;
+    &:first-child{
+      margin-left: 0;
+    }
+  }
+  .material-icons{
+    font-size: 11px;
+  }
+  .status-mensaje{
+    width: 100%;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #c5381c;
+    font-weight: 700;
+    font-size: 10px;
+    margin-left: 0;
+    display: block;
+  }
+}
+
+.like-mensaje{
+  float: right;
+}
+
+.comentario{
+  padding: 0 15px;
+  padding-bottom: 10px;
+  mat-card-header{
+    //border-bottom: 1px solid #DDD;
+    margin-bottom: 0;
+  }
+}
+
+.paginacion-mensajes{
+  text-align: center;
+  .ngx-pagination .current{
+    background: transparent !important;
+    color: #0C776F !important;
+  }
+}
+mat-spinner{
+  width: 24px;
+  height: 24px;
+  margin: 0 auto;
+  margin-bottom:15px;
+}
+.mensaje-modal{
+  font-size: 12px;
+  color: green;
+  text-align: center;
+  line-height:1.2;
+  //width: 100%;
+  max-width: 320px;
+  padding:20px;
+  border: 1px solid #DDD;
+  border-radius:5px;
+  margin: 20px auto;
+}
+
+ol{
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+  border-bottom: 1px dashed #DDD;
+}
+
+.spinnerModal{
+  margin:0 auto;
+  width: 10px !important;
+  height: 10px !important;
+  font-size: 10px !important;
+  margin-top:10%;
+  p{
+    margin-top: 30px;
+  }
+}

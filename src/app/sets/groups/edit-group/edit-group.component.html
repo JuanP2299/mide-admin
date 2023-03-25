@@ -1,0 +1,23 @@
+<div *ngIf="active" class="window-group">
+  <h3>
+    <mat-icon class="mat-24">edit</mat-icon>
+    Editar Grupo : <span class="nombre-grupo">{{message}}</span></h3>
+  <form [formGroup]="editGroupForm" class="edit-group">
+    <mat-form-field>
+      <input matInput type="text" placeholder="Nombre" formControlName="name" value="{{message}}">
+    </mat-form-field>
+    <div class="button-row">
+      <button type="button" mat-raised-button
+              (click)="updateGroup()" [disabled]="editGroupForm.invalid" color="primary">
+        Guardar cambios
+      </button>
+      <button type="button" mat-button (click)="closeDialog()" color="warn">
+        Descartar cambios
+      </button>
+    </div>
+  </form>
+</div>
+<div *ngIf="!active" class="text-center">
+  <mat-spinner></mat-spinner>
+  <p>Editando grupo</p>
+</div>

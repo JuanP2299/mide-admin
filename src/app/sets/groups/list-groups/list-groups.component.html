@@ -1,0 +1,87 @@
+<div class="cont-grid-general" *ngIf="loadComplete">
+  <div class="cont-grilla">
+    <h3 class="titulo-pagina">
+      Crear grupo de usuarios
+      <button mat-mini-fab color="default" (click)="activeNewGroup(true)" *ngIf="!activeInput">
+        <mat-icon class="mat-24" mat-tooltip="Agregar Grupo">add</mat-icon>
+      </button>
+    </h3>
+    <h3 class="titulo-pagina ml-50">
+      Clonar grupo de usuarios
+      <button mat-mini-fab color="default" (click)="openModalAsociarGrupo()">
+        <mat-icon class="mat-24" mat-tooltip="Clonar Grupo">content_copy</mat-icon>
+      </button>
+    </h3>
+
+    <div fxLayout.xs="column" fxLayoutWrap="wrap" fxLayoutAlign.xs="start" fxLayoutAlign="start stretch"
+      fxLayoutGap="10px" fxLayoutGap.xs="0">
+      <div *ngIf="activeInput" class="flex-item" fxFlex.xs="100%" fxFlex.sm="48%" fxFlex="48%">
+        <form [formGroup]="newGroupForm" class="" (submit)="setNewGroup()">
+          <mat-card class="tot-card form-card">
+            <mat-card-content>
+              <!--Inicio Activar input Save New-->
+              <div class="nombre-grupo nuevo-grupo">
+                <mat-form-field>
+                  <input matInput placeholder="Nombre de grupo" formControlName="name" />
+                </mat-form-field>
+              </div>
+              <div class="actions-group">
+                <div class="button-row">
+                  <button mat-raised-button [disabled]="newGroupForm.invalid" type="submit" color="primary">
+                    Guardar
+                  </button>
+                  <button mat-button type="button" (click)="activeNewGroup(false)" *ngIf="activeInput">Cancelar</button>
+                </div>
+              </div>
+              <!--Activar input-->
+            </mat-card-content>
+          </mat-card>
+        </form>
+      </div>
+      <div *ngFor="let group of groups" class="flex-item" fxFlex.xs="100%" fxFlex.gt-sm="48%">
+        <mat-card class="tot-card card-group">
+          <mat-card-content>
+            <div class="nombre-grupo">
+              <h5>{{ group.name }}</h5>
+            </div>
+            <div class="actions-edit-group">
+              <div class="button-row">
+                <button mat-icon-button
+                  [routerLink]="['/sets', set?.idCategory, 'groups-actions', 'view', group.idGroup]"
+                  matTooltip="Ver Grupo" color="primary">
+                  <mat-icon>remove_red_eye</mat-icon>
+                </button>
+                <button mat-icon-button (click)="openDialog(group)" matTooltip="Editar Grupo" color="primary">
+                  <mat-icon>mode_edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="openDialogDelete(group)" matTooltip="Eliminar Grupo" color="warn">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+            <!--            <button mat-icon-button [matMenuTriggerFor]="menu">
+                          <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu>
+                          <button mat-menu-item [routerLink]="['/sets', set?.idCategory,'groups-actions', 'view', group.idGroup]">
+                            <mat-icon>remove_red_eye</mat-icon>
+                            <span>Ver Grupo</span>
+                          </button>
+                          <button mat-menu-item (click)="openDialog(group)">
+                            <mat-icon>mode_edit</mat-icon>
+                            <span>Editar Grupo</span>
+                          </button>
+                          <button mat-menu-item (click)="openDialogDelete(group)">
+                            <mat-icon>delete</mat-icon>
+                            <span>Eliminar Grupo</span>
+                          </button>
+                        </mat-menu>-->
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div *ngIf="groups.length === 0 && !activeInput">
+        <h4 class="mensaje-info">No existen grupos asignados</h4>
+      </div>
+    </div>
+  </div>
+</div>

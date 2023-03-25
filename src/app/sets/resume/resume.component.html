@@ -1,0 +1,137 @@
+<div class="cont-grid-general">
+  <div fxLayout.xs="column" fxLayoutWrap="wrap" fxLayoutAlign.xs="start" fxLayoutAlign="start stretch">
+    <div class="datos-modificacion" fxFlex="100%">
+      <!--ALerta-->
+      <div class="alert alert-publish" fxFlex="100%" *ngIf="setChange">
+        <div class="mensaje-alerta">
+          <i class="material-icons" color="danger">info_outline</i> Existe un borrador sin publicar.
+          <span class="fecha-modificacion">Última modificación: {{toHumanDate(setChange?.use.at)}}</span>
+        </div>
+        <mat-list>
+          <mat-list-item>
+            <mat-icon mat-list-icon>check_circle</mat-icon>
+            Edición: {{setChange?.use.inUse && !(now - setChange?.use.at > 60 * 6 * 1000) ? 'Bloqueada' : 'Disponible'}}
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon mat-list-icon>check_circle</mat-icon>
+            Último Editor: {{setChange?.use.user.name}}
+          </mat-list-item>
+        </mat-list>
+        <div class="acciones-alerta-borrador">
+          <button mat-raised-button color="primary" (click)="publish()" [disabled]="active">Publicar</button>
+          <button mat-button color="warn" (click)="discart()">Descartar cambios</button>
+          <button mat-button color="default" [routerLink]="['/sets', set?.idCategory]">Volver</button>
+        </div>
+        <div *ngIf="active" class="msg-alert">
+          <p>{{(categoryOff.length === 1) ? 'Existe una categoría' : 'Existen varias categorías'}} sin preguntas
+            asociadas. Es necesario que {{(categoryOff.length === 1) ? 'la categoría' : 'las categorías'}} contenga{{(categoryOff.length === 1) ? '' : 'n'}} al
+            menos una pregunta para publicar los cambios asociados al conjunto.</p>
+          <p>Listado de categorias a corregir:</p>
+          <ul *ngFor="let item of categoryOff">
+            <li>{{item}}</li>
+          </ul>
+        </div>
+      </div>
+    <!--ALerta-->
+    </div>
+
+  </div>
+
+  <!--start. Conjunto-->
+  <div class="caja-resumen">
+    <h1>Conjunto</h1>
+    <div fxLayout="row" fxLayoutAlign="space-between stretch" class="cont-columnas-resumen">
+      <div fxFlex="50%" class="columna-resumen"><h3>Información Original</h3></div>
+      <div fxFlex="50%" class="columna-resumen"><h3>Información Modificada</h3></div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between stretch" class="cont-columnas-resumen">
+      <div *ngIf="set" class="columna-resumen columna-original" fxFlex="50%">
+        <div>{{set.name}}</div>
+        <div>{{set.desc}}</div>
+        <div>{{set.createdBy}}</div>
+        <div>{{set.years}}</div>
+        <div>{{set.disclaimer}}</div>
+      </div>
+      <div *ngIf="setChange && !setChange.set" class="columna-resumen" fxFlex="50%">
+        <span class="no-vista-previa">Sin información modificada</span>
+      </div>
+      <div *ngIf="setChange && setChange.set" class="columna-resumen columna-modificada" fxFlex="50%">
+        <div>{{setChange.set.name}}</div>
+        <div>{{setChange.set.desc}}</div>
+        <div>{{setChange.set.createdBy}}</div>
+        <div>{{setChange.set.years}}</div>
+        <div>{{setChange.set.disclaimer}}</div>
+        <mat-chip-list *ngIf="setChange.set.name && setChange.set.name" class="cont-chip">
+          <mat-chip class="chip-resumen chip-update">
+            Información Actualizada
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+    </div>
+  </div>
+
+  <!--end. Conjunto-->
+
+  <!--start. Categorias-->
+
+  <div class="caja-resumen">
+    <h1>Categorías</h1>
+    <div fxLayout="row" fxLayoutAlign="space-between stretch" class="cont-columnas-resumen">
+      <div fxFlex="50%" class="columna-resumen"><h3>Información Original</h3></div>
+      <div fxFlex="50%" class="columna-resumen"><h3>Información Modificada</h3></div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between stretch" *ngFor="let resume of resumesCategory"
+         class="cont-columnas-resumen">
+      <div class="columna-resumen columna-original" fxFlex="50%">
+        <span class="no-vista-previa" *ngIf="!resume.item?.name">Sin información previa </span> {{resume.item?.name}}
+      </div>
+      <div class="columna-resumen columna-modificada" fxFlex="50%">
+        {{resume.change.category.name}}
+        <mat-chip-list *ngIf="resume && resume.change" class="cont-chip">
+          <mat-chip [ngClass]="{'chip-resumen': true, 'chip-update': resume.change.action === 'update',
+      'chip-create': resume.change.action === 'create', 'chip-delete': resume.change.action === 'delete'}">
+            Información {{resume.change.action === 'update' ? 'Actualizada' : (resume.change.action === 'create' ? 'Creada' : 'Borrada')}}
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+    </div>
+  </div>
+  <!--end. Categorias-->
+  <!--start. Preguntas-->
+  <div class="caja-resumen">
+    <h1>Preguntas</h1>
+    <div fxLayout="row" fxLayoutAlign="space-between stretch" class="cont-columnas-resumen">
+      <div fxFlex="50%" class="columna-resumen"><h3>Información Original</h3></div>
+      <div fxFlex="50%" class="columna-resumen"><h3>Información Modificada</h3></div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between stretch" *ngFor="let resume of resumesQuestion"
+         class="cont-columnas-resumen">
+      <div fxFlex="50%" class="columna-resumen columna-original">
+        <div><span class="no-vista-previa" *ngIf="!resume.item?.title">Sin información previa </span>{{resume.item?.title}}
+        </div>
+        <ul>
+          <li *ngFor="let alternative of resume.item?.alternatives" [ngClass]="{'correct': alternative.correct}">
+            {{alternative.text}}
+          </li>
+        </ul>
+      </div>
+      <div fxFlex="50%" class="columna-resumen columna-modificada">
+        <div>
+          {{resume.change.question.title}}
+        </div>
+        <ul>
+          <li *ngFor="let alternative of resume.change.question.alternatives"
+              [ngClass]="{'correct': alternative.correct}">
+            {{alternative.text}}
+          </li>
+        </ul>
+        <mat-chip-list *ngIf="resume && resume.change" class="cont-chip">
+          <mat-chip [ngClass]="{'chip-resumen': true, 'chip-update': resume.change.action === 'update',
+      'chip-create': resume.change.action === 'create', 'chip-delete': resume.change.action === 'delete'}">
+            Información {{resume.change.action === 'update' ? 'Actualizada' : (resume.change.action === 'create' ? 'Creada' : 'Borrada')}}
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+    </div>
+  </div>
+  <!--end. Preguntas-->

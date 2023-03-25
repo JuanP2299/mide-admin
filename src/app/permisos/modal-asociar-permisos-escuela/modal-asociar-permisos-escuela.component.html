@@ -1,0 +1,31 @@
+<div *ngIf="loadComplete" class="modal-sm">
+  <div class="header-modal">
+    <h2>Permisos escuela</h2>
+    <button mat-button color="warn" (click)="closeDialog(true)">
+      <span class="material-icons">
+        close
+      </span>
+    </button>
+  </div>
+  <div class="body-modal">
+    <p>El usuario seleccionado automáticamente podrá acceder a esta organización</p>
+    <table class="card">
+      <thead>
+        <tr>
+          <th>Nombre completo</th>
+          <th>Email</th>
+          <th>Administra escuela</th>
+        </tr>
+      </thead>
+      <tbody class="contenido-listado-usuarios">
+        <tr *ngFor="let user of users">
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <input type="checkbox" (change)="onChangePermisos(user)" [checked]="user.isAdminEscuela" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

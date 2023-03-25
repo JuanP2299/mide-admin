@@ -1,0 +1,19 @@
+<div *ngIf="active">
+   <h3>
+      <mat-icon class="mat-24">delete</mat-icon>
+      Descartar Cambios </h3>
+    <p>¿Está seguro de descartar todos los cambios de este conjunto?</p>
+  <div class="button-row">
+    <button mat-button color="warn"
+            (click)="discard()">
+      Descartar
+    </button>
+    <button  mat-button (click)="closeDialog(false)">
+      Cancelar
+    </button>
+  </div>
+</div>
+<div *ngIf="!active" class="text-center">
+  <mat-spinner></mat-spinner>
+  <p>Descartando <br> Cambios...</p>
+</div>

@@ -1,0 +1,20 @@
+<div *ngIf="!loading" class="modal-sm">
+  <div>
+    <h2>Asignar profesor</h2>
+    <p>Estás seguro que desea asignar como profesor al usuario seleccionado?</p>
+  </div>
+  <div class="button-row" style="margin-top: 20px">
+    <button mat-button (click)="closeDialog(true)" class="btnCancel">
+      Cancelar
+      <span class="material-icons"> close </span>
+    </button>
+    <button mat-button color="warn" (click)="updatePerfilProfesor()" class="btnOk">
+      Aceptar
+      <span class="material-icons"> done </span>
+    </button>
+  </div>
+</div>
+<div *ngIf="loading" class="text-center">
+  <mat-spinner></mat-spinner>
+  <p>Cargando...</p>
+</div>

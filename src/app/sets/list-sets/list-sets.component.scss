@@ -1,0 +1,186 @@
+//Variables
+$primary-color: #e28c1a;
+
+.cont-sets {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mat-card-header{
+  display: block;
+}
+
+.cont-grilla {
+  margin-top: 30px;
+  mat-card {
+    padding: 0;
+    margin-bottom: 15px;
+    cursor: default;
+    mat-card-header {
+      padding: 24px;
+      min-height: 130px;
+      cursor: pointer;
+      .header-card{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .imagen-profesor img {
+          width: 4.7rem;
+          height: 4.7rem;
+          border-radius: 110px;
+          margin-left: 15px;
+        }
+      }
+      mat-card-subtitle {
+        background-color: #00000047;
+        display: inline-block;
+        color: white;
+        padding: 2px 6px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+      }
+      mat-card-title {
+        margin-bottom: 0;
+        //font-weight: 700;
+        font-size: 18px;
+        letter-spacing: 3px;
+        color: #fff;
+        text-transform: uppercase;
+      }
+      mat-error {
+        color: #fff !important;
+      }
+    }
+    mat-card-content {
+      padding: 15px 30px;
+      padding-bottom: 0;
+      font-size: 12px;
+      p {
+        margin-bottom: 0;
+      }
+    }
+    .mat-card-actions {
+      text-align: right;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.cont-titulo {
+  margin-top: 30px;
+  padding-bottom: 15px;
+  h1 {
+    margin-bottom: 0;
+    width: calc(100% - 250px);
+    display: inline-block;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 3px;
+  }
+}
+
+.tot-card {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  padding-bottom: 15px !important;
+  &:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
+}
+
+/* ==========================================================================
+   Caja Set
+========================================================================== */
+
+.desc-set {
+  font-weight: 500;
+  color: #666;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+  margin-bottom: 15px !important;
+  //height: 92px;
+  //height: 125px;
+}
+
+.autor-set,
+.periodo-set {
+  font-weight: 600;
+  color: $primary-color;
+  font-size: 15px;
+}
+.periodo-set {
+  .material-icons {
+    font-size: 16px;
+  }
+}
+.estado-set {
+  font-weight: 700;
+  color: $primary-color;
+}
+.estado-set.pendiente-publicacion {
+  color: brown;
+}
+.mat-form-field {
+  width: calc(100% - 45px);
+}
+
+.btn-eliminar-set {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+}
+
+mat-card-header {
+  transition: 0.3s all ease-out;
+}
+
+.rojo {
+  background-color: red;
+}
+
+.cont-anio {
+  width: calc(100% - 45px) !important;
+  padding-left: 100px;
+}
+
+.pendiente-publicacion {
+  background: #b02d00 !important;
+  &:hover {
+    background-color: #ff5722 !important;
+  }
+}
+.cont-cajas-inicio {
+  margin-top: 30px !important;
+  flex-wrap: wrap;
+}
+.mat-raised-button.mat-primary,
+.mat-fab.mat-primary,
+.mat-mini-fab.mat-primary {
+  background-color: #e28c1a;
+}
+
+.label-conjunto {
+  display: inline-block;
+}
+.titulo-tot-admin {
+  font-weight: 700;
+  font-size: 15px;
+  text-transform: uppercase;
+  color: #666;
+  letter-spacing: 4px;
+}
+.card-create-set {
+  mat-form-field {
+    padding-left: 0;
+  }
+}
+
+@media only screen and (min-width: 320px) and (max-width: 991px) {
+  .cont-sets {
+    width: 100%;
+    max-width: 1200px;
+  }
+}

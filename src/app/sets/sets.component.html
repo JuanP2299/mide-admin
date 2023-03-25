@@ -1,0 +1,35 @@
+<div class="cont-grid-general">
+  <div class="cont-sets">
+    <div fxLayout.xs="column" fxLayoutWrap="wrap" fxLayoutAlign.xs="start" fxLayoutAlign="space-between center">
+      <div fxFlex="auto">
+        <h1 class="titulo-pagina">
+          {{ nameSet }}<small>{{ title[0]?.name }}</small>
+        </h1>
+      </div>
+      <div class="sub-tools" fxFlex="auto">
+        <mat-button-toggle-group #group="matButtonToggleGroup">
+          <button mat-raised-button class="square-buttons" (click)="select(1)" [color]="active === 1 ? 'primary' : ''"
+            [routerLink]="['/sets/', set?.idCategory]">
+            Administrar Conjunto
+          </button>
+          <button mat-raised-button class="square-buttons" (click)="select(2)" [color]="active === 2 ? 'primary' : ''"
+            [routerLink]="['/sets', set?.idCategory, 'groups-actions']" *ngIf="set?.type === 'production'">
+            Administrar Usuarios
+          </button>
+          <button mat-raised-button class="square-buttons" (click)="select(3)" [color]="active === 3 ? 'primary' : ''"
+            [routerLink]="['/sets', set?.idCategory, 'statistics']" *ngIf="set?.type === 'production'">
+            Estadísticas
+          </button>
+          <button mat-raised-button class="square-buttons" (click)="openModalFileSetUploadDialog(set?.idCategory)"
+            [color]="active === 4 ? 'primary' : ''" [routerLink]="['/sets/', set?.idCategory]">
+            Subir archivo
+          </button>
+          <button mat-fab color="primary" [routerLink]="['/sets']" matTooltip="Ir a sets">
+            <i class="material-icons">home</i>
+          </button>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -1,0 +1,91 @@
+<div class="cont-sets">
+  <div class="cont-grilla">
+    <div class="grid-header" fxLayout.xs="column" fxLayoutWrap="wrap" fxLayoutAlign.xs="start"
+      fxLayoutAlign="start stretch" fxLayoutGap="10px" fxLayoutGap.xs="0">
+      <div fxFlex.xs="100%" fxFlex="68%">
+        <h1 class="titulo-tot-admin" color="principal">Administrar usuarios</h1>
+      </div>
+    </div>
+
+    <div class="flex-item" fxFlex.xs="100%" fxFlex="90%">
+      <mat-card class="upload-card">
+        <mat-card-header>
+          <h4 class="titulo-tot-admin">Crear usuarios por planilla</h4>
+        </mat-card-header>
+        <mat-card-content>
+          <div>
+            <p>Ingrese una planilla para crear los usuarios</p>
+            <input class="file-upload" type="file" (change)="onFileChange($event)" multiple="false"
+              accept=".xls,.xlsx, .csv" #inputFile />
+            <div class="button-row">
+              <button mat-raised-button [disabled]="!fileUploadValid" (click)="uploadFile()" color="primary">
+                Crear Usuarios
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="flex-item" fxFlex.xs="100%" fxFlex="90%">
+      <!-- Boton que usamos una vez para borrar todos los usuarios de cognito -->
+      <!-- <button (click)="getUsers()">
+        LISTAR USUARIOS
+      </button> -->
+      <mat-card class="upload-card">
+        <mat-card-header>
+          <h4 class="titulo-tot-admin">Crear usuario</h4>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="newUserForm" (submit)="create()" class="formTot">
+            <div class="d-block">
+              <div fxFlex="auto">
+                <mat-form-field class="margin-input">
+                  <input matInput type="text" formControlName="email" placeholder="Ingresa correo electrónico">
+                  <mat-error *ngIf="newUserForm.get('email').touched && newUserForm.get('email').hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                  <mat-error *ngIf="newUserForm.get('email').touched && newUserForm.get('email').hasError('email')">
+                    Ingresa un mail válido
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="auto">
+                <mat-form-field class="margin-input">
+                  <input matInput type="text" formControlName="name" placeholder="Ingresa nombre completo" />
+                  <mat-error *ngIf="newUserForm.get('name').touched && newUserForm.get('name').hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="auto">
+                <mat-form-field class="margin-input">
+                  <input matInput type="password" formControlName="password" placeholder="Ingresa contraseña" />
+                  <mat-error
+                    *ngIf="newUserForm.get('password').touched && newUserForm.get('password').hasError('required')">
+                    Este campo es obligatorio
+                  </mat-error>
+                  <mat-error
+                    *ngIf="newUserForm.get('password').touched && newUserForm.get('password').hasError('minlength')">
+                    Ingresa una clave de 6 caracteres mínimo
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="button-row">
+                <button mat-raised-button color="primary" type="submit" [disabled]="newUserForm.invalid">
+                  Crear usuario
+                </button>
+              </div>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <button class="btn-return" mat-button color="primary" [routerLink]="['/home']">
+    <i class="material-icons">keyboard_backspace</i> Volver
+  </button>
+</div>

@@ -1,0 +1,644 @@
+<div class="cont-grid-general">
+  <div fxLayout="row" fxLayoutAlign="end center">
+    <button mat-raised-button *ngIf="!activeButtonPublish && defaultButtonText && user.isAdmin === 1"
+      style="background-color: #e28c1a; color: #fff" (click)="changeDefaultStatus()">
+      {{defaultButtonText}}
+    </button>
+  </div>
+
+  <div fxLayout.xs="column" fxLayoutWrap="wrap" fxLayoutAlign.xs="start" fxLayoutAlign="start stretch"
+    class="info-alert">
+    <div class="datos-modificacion" fxFlex="100%" *ngIf="changes.length >= 1 && setChange">
+      <div class="alert alert-publish" fxFlex="100%" *ngIf="activeButtonPublish">
+        <div class="mensaje-alerta">
+          <i class="material-icons">info_outline</i> Estado: Pendiente de publicación
+          <span class="fecha-modificacion"> Última modificación: {{ toHumanDate(setChange.use.at) }} </span>
+        </div>
+        <mat-list>
+          <mat-list-item>
+            <mat-icon mat-list-icon>check_circle</mat-icon>
+            Edición: {{ setChange.use.inUse && !(now - setChange.use.at > 60 * 6 * 1000) ? "Bloqueada" : "Disponible" }}
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon mat-list-icon>check_circle</mat-icon>
+            Último Editor: {{ setChange.use.user.name }}
+          </mat-list-item>
+        </mat-list>
+        <div class="acciones-alerta-borrador">
+          <button mat-raised-button style="background-color: #e28c1a; color: #fff"
+            [routerLink]="['/sets', set?.idCategory, 'publish']">
+            Revisar y publicar
+          </button>
+        </div>
+      </div>
+    </div>
+    <br>
+
+    <div class="alert alert-publish" fxFlex="100%" *ngIf="set.type === 'draft' && changes.length === 0">
+      <div [ngClass]="{
+          'mensaje-alerta': true,
+          'no-border-right': set.type === 'draft' && changes.length === 0
+        }">
+        <mat-list class="lista-mensaje-alerta">
+          <mat-list-item> <i class="material-icons">info_outline</i> Estado: Pendiente de Publicación </mat-list-item>
+          <mat-list-item>
+            <mat-icon mat-list-icon>check_circle</mat-icon>
+            Debe agregar categorías y preguntas al conjunto para poder realizar su primera publicación.
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+
+    <div class="flex-item" fxFlex.xs="100%" fxFlex="100%">
+      <mat-list class="tab-charts">
+        <button mat-button (click)="selectedOption(1)" [color]="active === 1 ? 'primary' : 'default'">
+          Descripción
+        </button>
+        <button mat-button (click)="selectedOption(2)" [color]="active === 2 ? 'primary' : 'default'">
+          Categorías
+        </button>
+        <button mat-button (click)="selectedOption(3)" [color]="active === 3 ? 'primary' : 'default'">Preguntas</button>
+      </mat-list>
+    </div>
+  </div>
+
+  <div class="contenido">
+    <div fxLayout="column" fxLayoutWrap="wrap" fxLayoutAlign.xs="start" fxLayoutAlign="start stretch">
+      <div class="flex-item" fxFlex.xs="100%" fxFlex="100%">
+        <!--<div class="breadcrumb breadcrumb-preguntas">
+          <a (click)="navigate(homeRoute, true)">{{set?.name}}</a>
+          <a *ngFor="let route of routes" (click)="navigate(route)"> {{route.name}}</a>
+        </div>-->
+      </div>
+    </div>
+
+    <!--Categorías y Preguntas-->
+
+    <!--init contend-->
+    <div fxLayout="column" fxLayoutWrap="wrap" fxLayoutAlign="start stretch" fxLayoutGap="10px">
+      <div class="flex-item" fxFlex="100%" *ngIf="active === 1">
+        <mat-expansion-panel class="panel-descripcion" expanded="true" disabled>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Información del conjunto</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="actions-panel" *ngIf="!editCat">
+            <button mat-icon-button style="background-color: #e28c1a; color: #fff"
+              matTooltip="Editar Información Conjunto" (click)="toggleEdit()">
+              <mat-icon class="md-24">edit_mode</mat-icon>
+            </button>
+          </div>
+
+          <!--start. Datos Set-->
+
+          <mat-list class="datos-set" *ngIf="!editCat && loadComplete" fxLayout.xs="column" fxLayout="row wrap"
+            fxLayoutWrap="wrap" fxLayoutAlign.xs="start" fxLayoutAlign="start" fxLayoutGap="2%">
+            <mat-list-item fxFlex="40%">
+              <mat-icon mat-list-icon>check_circle</mat-icon>
+              <h4 mat-line>Nombre del conjunto</h4>
+              <p mat-line>{{ setShow?.name }}</p>
+            </mat-list-item>
+            <mat-list-item fxFlex="auto%">
+              <mat-icon mat-list-icon>check_circle</mat-icon>
+              <h4 mat-line>Cantidad de preguntas</h4>
+              <p mat-line>{{ questions.length }} Preguntas</p>
+            </mat-list-item>
+            <mat-list-item fxFlex="40%">
+              <mat-icon mat-list-icon>check_circle</mat-icon>
+              <h4 mat-line>Descripción</h4>
+              <p mat-line>{{ setShow?.desc }}</p>
+            </mat-list-item>
+            <mat-list-item fxFlex="20%">
+              <mat-icon mat-list-icon>check_circle</mat-icon>
+              <h4 mat-line>Fuente</h4>
+              <p mat-line>{{ setShow?.createdBy }}</p>
+            </mat-list-item>
+            <mat-list-item fxFlex="auto">
+              <mat-icon mat-list-icon>check_circle</mat-icon>
+              <h4 mat-line>Año de creación de preguntas</h4>
+              <p mat-line>{{ setShow?.years }}</p>
+            </mat-list-item>
+
+            <mat-list-item fxFlex="40%">
+              <mat-icon mat-list-icon>check_circle</mat-icon>
+              <h4 mat-line>Tipo de conjunto</h4>
+              <p mat-line>{{ getSetMode()}}</p>
+            </mat-list-item>
+            <div fxFlex="auto" *ngIf="esEvaluacion()">
+              <mat-list-item fxFlex="auto">
+                <mat-icon mat-list-icon>check_circle</mat-icon>
+                <h4 mat-line>Duracion</h4>
+                <p mat-line>{{ set.duration }} Minutos</p>
+              </mat-list-item>
+              <mat-list-item fxFlex="auto">
+                <mat-icon mat-list-icon>check_circle</mat-icon>
+                <h4 mat-line>Cantidad intentos</h4>
+                <p mat-line>{{ set.attempts }} </p>
+              </mat-list-item>
+            </div>
+
+            <div fxFlex="100%" *ngIf="hasVideo()">
+              <mat-list-item fxFlex="100%">
+                <mat-icon mat-list-icon>check_circle</mat-icon>
+                <h4 mat-line>Video del conjunto</h4>
+                <p mat-line>
+                  <a href="{{getVideoUrl()}}">
+                    {{getVideoUrl()}}
+                  </a>
+                </p>
+              </mat-list-item>
+            </div>
+
+            <div fxFlex="100%" *ngIf="hasUrl()">
+              <mat-list-item fxFlex="100%">
+                <mat-icon mat-list-icon>check_circle</mat-icon>
+                <h4 mat-line>URL de interés</h4>
+                <p mat-line>
+                  <a href="{{getUrl()}}">
+                    {{getUrl()}}
+                  </a>
+                </p>
+              </mat-list-item>
+            </div>
+
+            <!--<mat-list-item *ngIf="setShow?.disclaimer" class="disclaimer-option" fxFlex="100%">-->
+            <mat-list-item class="disclaimer-option" fxFlex="100%">
+              <mat-icon mat-list-icon>check_circle</mat-icon>
+              <h4 mat-line>Acerca de</h4>
+              <p mat-line>{{ setShow?.disclaimer }}</p>
+            </mat-list-item>
+          </mat-list>
+          <!--end. Datos Set-->
+
+          <!--Edicion Info General-->
+
+          <div *ngIf="editCat" class="formTot">
+            <!---->
+            <div>
+              <form [formGroup]="setForm">
+                <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutWrap="wrap" fxLayoutAlign.xs="start"
+                  fxLayoutAlign="start" fxLayoutGap="2%">
+                  <div fxFlex="100%" class="item-formTot">
+                    <mat-form-field>
+                      <input matInput type="text" placeholder="Nombre del conjunto" formControlName="name" />
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="auto">
+                    <mat-form-field>
+                      <input matInput type="text" placeholder="Descripción" formControlName="desc" maxlength="50"
+                        autocomplete="off" />
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="auto">
+                    <mat-form-field>
+                      <input matInput type="text" placeholder="Fuente" formControlName="createdBy" />
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="auto" class="item-formTot">
+                    <mat-form-field>
+                      <input matInput type="text" placeholder="Año de creación de preguntas" formControlName="years" />
+                      <span matPrefix
+                        matTooltip="Año o período de años en que fue creado el material. Ejemplo 2010-2017"><i
+                          class="material-icons">help</i>&nbsp;</span>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="100%" class="item-formTot">
+                    <mat-form-field>
+                      <textarea matInput type="text" placeholder="Acerca de" formControlName="disclaimer"
+                        autocomplete="off" matAutosizeMinRows="5" matAutosizeMaxRows="10"></textarea>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="100%" class="menu-cat-pregunta menu-actions">
+                    <button mat-raised-button color="primary" (click)="saveDraft()" [disabled]="loading">
+                      Guardar
+                    </button>
+                    <button mat-button color="warn" (click)="toggleEdit()" [disabled]="loading">Cancelar</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!--Edicion Info General-->
+        </mat-expansion-panel>
+        <mat-expansion-panel class="panel-descripcion borrador" expanded="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Borrador</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <!--start. Datos Set-->
+          <mat-list class="datos-set" *ngIf="!editCat" fxFlex="100%">
+            <mat-list-item>
+              <mat-icon mat-list-icon>check_circle</mat-icon>
+              <h4 mat-line>Nombre</h4>
+              <p mat-line>{{ setChange?.set?.name }}</p>
+            </mat-list-item>
+            <mat-list-item>
+              <mat-icon mat-list-icon>check_circle</mat-icon>
+              <h4 mat-line>Descripción</h4>
+              <p mat-line>{{ setChange?.set?.desc }}</p>
+            </mat-list-item>
+            <mat-list-item>
+              <mat-icon mat-list-icon>check_circle</mat-icon>
+              <h4 mat-line>Fuente</h4>
+              <p mat-line>{{ setChange?.set?.createdBy }}</p>
+            </mat-list-item>
+            <mat-list-item>
+              <mat-icon mat-list-icon>check_circle</mat-icon>
+              <h4 mat-line>Año de creación de preguntas</h4>
+              <p mat-line>{{ setChange?.set?.years }}</p>
+            </mat-list-item>
+            <!--<mat-list-item *ngIf="setChange?.set?.disclaimer">-->
+            <mat-list-item>
+              <mat-icon mat-list-icon>check_circle</mat-icon>
+              <h4 mat-line>Acerca de</h4>
+              <p mat-line>{{ setChange?.set?.disclaimer }}</p>
+            </mat-list-item>
+          </mat-list>
+          <!--end. Datos Set-->
+        </mat-expansion-panel>
+      </div>
+
+      <!--Inicio Categorias-->
+      <div class="flex-item" fxFlex="75%" *ngIf="active === 2">
+        <mat-card class="tot-card">
+          <h4 class="mat-subheader">Categorías</h4>
+          <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-between center" fxLayoutGap="10px"
+            class="header-edit-questions">
+            <mat-form-field fxFlex="auto">
+              <input matInput type="text" placeholder="Buscar Categoría" [(ngModel)]="searchTerm"
+                (keyup)="searchInput.next($event.target.value)" />
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+            <div fxFlex="20%">
+              <button mat-raised-button class="sel-categoria-pregunta btn-agregar" color="primary" (click)="add(true)">
+                <i class="material-icons">add</i>
+                Agregar Categoría
+              </button>
+            </div>
+          </div>
+          <div>
+            <mat-list class="lista-cat">
+              <mat-list-item *ngIf="createCategory && createCategory.idCategory" class="item-cat primer-item-cat">
+                <form [formGroup]="categoryForm" (submit)="save(true)" class="form-crear-cat">
+                  <div fxLayout="row" fxLayoutAlign="end center">
+                    <div class="titulo-cat" fxFlex="auto">
+                      <mat-form-field>
+                        <input matInput type="text" formControlName="name" autofocus autocomplete="off" />
+                        <mat-placeholder>Nombre de categoría</mat-placeholder>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="30%" class="menu-cat-pregunta">
+                      <button mat-raised-button [disabled]="categoryForm.invalid" color="primary">
+                        Guardar Categoría
+                      </button>
+                      <button mat-button color="warn" (click)="cancelAdd()">Cancelar</button>
+                    </div>
+                  </div>
+                </form>
+              </mat-list-item>
+
+              <mat-list-item *ngFor="
+                  let item of items
+                    | paginate
+                      : {
+                          itemsPerPage: 5,
+                          currentPage: pagination,
+                          id: 'pagination'
+                        }
+                ">
+                <form [formGroup]="categoryForm" (submit)="save(true, item)"
+                  *ngIf="verify(item, 'category') && item.edit" class="form-crear-cat" fxLayout="row" fxFill>
+                  <div class="titulo-cat" fxFlex="80%">
+                    <mat-form-field>
+                      <input matInput type="text" formControlName="name" />
+                      <mat-placeholder>Nombre de categoría</mat-placeholder>
+                    </mat-form-field>
+                  </div>
+                  <div class="menu-cat-pregunta" fxFlex="20%">
+                    <div class="button-row">
+                      <button mat-raised-button color="primary" [disabled]="categoryForm.invalid">Guardar</button>
+                      <button mat-button (click)="cancelEdit(item)" color="warn">Cancelar</button>
+                    </div>
+                  </div>
+                </form>
+                <div fxLayout="row" fxFill fxLayoutAlign="start center">
+                  <div *ngIf="verify(item, 'category') && !item.edit" class="titulo-cat" fxFlex="auto">
+                    <span class="nombre-categoria">{{ item.name }}</span> |
+                    <small>{{ setNumberQuestions(item) }} Preguntas</small>
+                    <mat-chip-list *ngIf="item.type">
+                      <mat-chip [ngClass]="{
+                          'chip-resumen': true,
+                          'chip-update': item.type === 'update',
+                          'chip-create': item.type === 'create',
+                          'chip-delete': item.type === 'delete'
+                        }">Información {{ item.type === "create" ? "creada" : item.type === "delete" ? "borrada" :
+                        "modificada" }}
+                      </mat-chip>
+                    </mat-chip-list>
+                  </div>
+
+                  <div class="menu-cat-pregunta" fxFlex="20%" *ngIf="!item.edit">
+                    <button mat-icon-button color="primary" (click)="openFileUploadDialog(item)"
+                      matTooltip="Cargar Preguntas">
+                      <mat-icon class="md-24">attach_file</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" (click)="edit(item)" matTooltip="Editar Categoría">
+                      <mat-icon class="md-24">edit_mode</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="delete(item)" matTooltip="Eliminar Categoría"
+                      *ngIf="checkCategoryDelete(item)">
+                      <mat-icon class="md-24">delete</mat-icon>
+                    </button>
+                    <button color="warn" mat-icon-button *ngIf="checkEditCategory(item) && !checkCategoryDelete(item)"
+                      (click)="delete(item, true)" matTooltip="Descartar cambios">
+                      <mat-icon class="md-24">undo</mat-icon>
+                    </button>
+                    <button mat-icon-button class="btn-deleteQuestionFirst"
+                      matTooltip="Para eliminar esta categoría, es necesario borrar todas las preguntas que contiene"
+                      *ngIf="!checkCategoryDelete(item)">
+                      <mat-icon class="md-24">delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </mat-list-item>
+            </mat-list>
+            <pagination-controls (pageChange)="setPagination($event)" id="pagination" autoHide="true"
+              previousLabel="Anterior" nextLabel="Próximo" screenReaderPaginationLabel="Paginación"
+              screenReaderPageLabel="pag"></pagination-controls>
+          </div>
+        </mat-card>
+      </div>
+      <!--Fin Categorias-->
+
+      <!--Inicio Preguntas-->
+      <div class="flex-item" fxFlex="75%" *ngIf="active === 3">
+        <mat-card class="tot-card">
+          <h4 class="mat-subheader">Preguntas</h4>
+          <div *ngIf="
+              (!routes ||
+                routes.length === 0 ||
+                (routes.length > 0 && !verify(routes[routes.length - 1].selected, 'question'))) &&
+              !createQuestion &&
+              !showDetailQuestion
+            " fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-between center" fxLayoutGap="10px"
+            class="header-edit-questions">
+            <mat-form-field fxFlex="auto">
+              <input matInput type="text" placeholder="Buscar Preguntas" [(ngModel)]="searchTerm"
+                (keyup)="searchInput.next($event.target.value)" autocomplete="off" />
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+            <div fxFlex="20%">
+              <mat-form-field>
+                <mat-select placeholder="Filtrar por Categoria" [(ngModel)]="selectedCategory"
+                  (selectionChange)="filterCategory($event)">
+                  <mat-option>Todos</mat-option>
+                  <mat-option *ngFor="let food of categories" [value]="food.idCategory">
+                    {{ food.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="20%">
+              <button mat-raised-button class="sel-categoria-pregunta btn-agregar" matTooltip="Agregar" color="primary"
+                (click)="add(false)">
+                <i class="material-icons">add</i>
+                Agregar Pregunta
+              </button>
+            </div>
+          </div>
+
+          <!-- Listado de Preguntas -->
+          <div *ngIf="
+              (!routes ||
+                routes.length === 0 ||
+                (routes.length > 0 && !verify(routes[routes.length - 1].selected, 'question'))) &&
+              !createQuestion
+            ">
+            <!--Listado Preguntas-->
+
+            <div *ngIf="!showDetailQuestion">
+              <div *ngFor="
+                  let item of questions                    
+                " fxLayout="row" fxFill fxLayoutAlign="start center" class="cont-enunciado-pregunta">
+                <div *ngIf="verify(item, 'question')" class="titulo-cat enunciado-pregunta" fxFlex="auto">
+                  <span class="nombre-categoria">{{ setCategoryName(item) }} | </span>
+                  {{ item.number }} -
+                  <span class="enunciado-pregunta" [innerHTML]="truncateChar(item.title)"></span>
+                  <mat-chip-list *ngIf="item.type">
+                    <mat-chip [ngClass]="{
+                        'chip-resumen': true,
+                        'chip-update': item.type === 'update',
+                        'chip-create': item.type === 'create',
+                        'chip-delete': item.type === 'delete'
+                      }">Información {{ item.type === "create" ? "creada" : item.type === "delete" ? "borrada" :
+                      "modificada" }}
+                    </mat-chip>
+                  </mat-chip-list>
+                </div>
+                <div class="menu-cat-pregunta" fxFlex="20%" *ngIf="!item.edit">
+                  <button mat-icon-button color="primary" (click)="select(item)">
+                    <mat-icon class="md-24" matTooltip="Ver Pregunta">remove_red_eye</mat-icon>
+                  </button>
+                  <button mat-icon-button color="primary" (click)="edit(item)">
+                    <mat-icon class="md-24" matTooltip="Editar Pregunta">edit_mode</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="delete(item)" *ngIf="checkDeleteQuestion(item)">
+                    <mat-icon class="md-24" matTooltip="Eliminar Pregunta">delete</mat-icon>
+                  </button>
+                  <button mat-icon-button class="btn-deleteQuestionFirst"
+                    matTooltip="Para eliminar este cambio, es necesario descartar el cambio de categoria eliminada primero"
+                    *ngIf="!checkDeleteQuestion(item)">
+                    <mat-icon class="md-24">delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <pagination-controls (pageChange)="setPagination($event)" id="pagination" autoHide="true"
+              previousLabel="Anterior" nextLabel="Próximo" screenReaderPaginationLabel="Paginación"
+              screenReaderPageLabel="pag" *ngIf="!showDetailQuestion"></pagination-controls>
+
+            <!-- Fin Listado Preguntas-->
+          </div>
+
+          <!--Detalle de Pregunta-->
+          <div *ngIf="showDetailQuestion" class="cont-pregunta">
+            <div class="titulo-pregunta titulo-pregunta-edicion">
+              <span [innerHTML]="question.title"></span>
+              <button mat-icon-button color="primary" (click)="edit(question)">
+                <mat-icon class="md-24" mat-tooltip="Editar">edit_mode</mat-icon>
+              </button>
+            </div>
+            <ol type="A">
+              <li *ngFor="let alternative of question.alternatives" [ngClass]="{ correct: alternative.correct }">
+                <span [innerHTML]="alternative.text"></span>
+              </li>
+            </ol>
+            <button mat-button (click)="backListQuestions()" color="primary">
+              <i class="material-icons">keyboard_backspace</i>
+              Volver
+            </button>
+          </div>
+          <!--Detalle de Pregunta-->
+
+          <div *ngIf="createQuestion && createQuestion.idQuestion" class="cont-pregunta cont-edicion-pregunta">
+            <form [formGroup]="questionForm" (submit)="save(false)" fxLayoutAlign="space-between center">
+              <div class="titulo-pregunta edicion-pregunta" fxFlex="">
+                <div class="edicion-alternativas" fxLayout="row" fxLayoutGap="15px">
+                  <div fxFlex="70%">
+                    <angular-editor placeholder="Enunciado de la pregunta" formControlName="title">
+
+                    </angular-editor>
+                    <mat-error
+                      *ngIf="questionForm.get('title').touched && questionForm.get('title').hasError('required')">
+                      La pregunta debe tener un enunciado
+                    </mat-error>
+                  </div>
+                  <!-- <mat-form-field fxFlex="14%">
+                    <mat-select placeholder="Categoría" formControlName="idCategory">
+                      <mat-option *ngFor="let category of categories" [value]="category.idCategory">
+                        {{ category.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="
+                        questionForm.get('idCategory').touched && questionForm.get('idCategory').hasError('required')
+                      "
+                    >
+                      Debe seleccionar una categoría
+                    </mat-error>
+                  </mat-form-field> -->
+                  <mat-form-field fxFlex="28%">
+                    <mat-select placeholder="Tipo" formControlName="idQuestionType"
+                      (selectionChange)="changeQuestionTypeOption($event)">
+                      <mat-option *ngFor="let type of questionTypes" [value]="type.idQuestionType">
+                        {{ type.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="
+                        questionForm.get('idQuestionType').touched &&
+                        questionForm.get('idQuestionType').hasError('required')
+                      ">
+                      Debe seleccionar un tipo
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <!-- Div pregunta alternativa -->
+                <div class="cont-alternativas" *ngIf="questionForm.get('idQuestionType').value == 'Alternativa'">
+                  <button mat-raised-button class="sel-categoria-pregunta agregar-alternativa" type="button"
+                    color="primary" matTooltip="Agregar Alternativa" (click)="addAlternative()">
+                    <i class="material-icons">add</i>
+                    Agregar Alternativa
+                  </button>
+                  <ol [style.margin-top.px]="50" type="A" class="lista-alternativas">
+                    <li [style.margin-top.px]="20"
+                      *ngFor="let alternative of createQuestion.alternatives; let i = index; trackBy: trackByIndex"
+                      [ngClass]="{ correct: alternative.correct }">
+                      <button mat-icon-button type="button" [color]="alternative.correct ? 'primary' : 'default'"
+                        (click)="selectCorrect(alternative)" class="sel-alternative">
+                        <mat-icon *ngIf="alternative.correct" class="alt-correcta">check_circle</mat-icon>
+                        <mat-icon *ngIf="!alternative.correct" color="default">panorama_fish_eye</mat-icon>
+                      </button>
+                      <div class="pregunta-alternativa">
+                        <div>
+                          <angular-editor (keyup)="checkAlternative()" placeholder="Enunciado Alternativa"
+                            *ngIf="alternative" [formControlName]="'alternative-' + alternative.idAlternative">
+                          </angular-editor>
+                          <mat-error
+                            *ngIf="questionForm.get('alternative-' + alternative.idAlternative).hasError('notUnique')">
+                            La alternativa no debe ser igual a otra
+                          </mat-error>
+                        </div>
+                        <div>
+                          <button mat-icon-button type="button" color="warn" (click)="removeAlternative(alternative)"
+                            class="del" matTooltip="Eliminar Alternativa">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </div>
+                      </div>
+                    </li>
+                  </ol>
+                  <div [ngClass]="{
+                      'alert alert-danger': true,
+                      'alert-none': !questionForm.invalid
+                    }">
+                    <ul>
+                      <li>La pregunta debe tener al menos dos alternativas</li>
+                      <li>La alternativa no debe estar repetida</li>
+                      <li>
+                        Debe haber una alternativa seleccionada como correcta
+                        <strong>(marcar círculo)</strong>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- Div pregunta verdadero o falso -->
+                <div class="cont-alternativas" *ngIf="questionForm.get('idQuestionType').value == 'VerdaderoOFalso'">
+                  <ol type="A" class="lista-alternativas">
+                    <li *ngFor="let alternative of createQuestion.alternatives; let i = index; trackBy: trackByIndex"
+                      [ngClass]="{ correct: alternative.correct }">
+                      <button mat-icon-button type="button" [color]="alternative.correct ? 'primary' : 'default'"
+                        (click)="selectCorrect(alternative)" class="sel-alternative">
+                        <mat-icon *ngIf="alternative.correct" class="alt-correcta">check_circle</mat-icon>
+                        <mat-icon *ngIf="!alternative.correct" color="default">panorama_fish_eye</mat-icon>
+                      </button>
+                      <mat-form-field>
+                        <textarea matInput [readonly]="true" *ngIf="alternative"
+                          [formControlName]="'alternative-' + alternative.idAlternative" (keyup)="checkAlternative()"
+                          placeholder="Enunciado Alternativa"
+                          [(ngModel)]="createQuestion.alternatives[i].text"></textarea>
+                      </mat-form-field>
+                    </li>
+                  </ol>
+                  <div [ngClass]="{
+                      'alert alert-danger': true,
+                      'alert-none': !questionForm.invalid
+                    }">
+                    <ul>
+                      <li>
+                        Debe haber una opción seleccionada como correcta
+                        <strong>(marcar círculo)</strong>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- Div pregunta pregunta abierta -->
+                <div *ngIf="questionForm.get('idQuestionType').value == 'Abierta'"></div>
+                <div class="caja-acciones">
+                  <span matTooltip="Para guardar la pregunta llenar todos los campos requeridos">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="
+                        questionForm.invalid ||
+                        (questionForm.get('idQuestionType').value == 'Alternativa' &&
+                          createQuestion.alternatives.length < 2)
+                      ">
+                      Guardar Pregunta
+                    </button>
+                  </span>
+                  <button mat-button color="warn" (click)="cancelAdd()">Cancelar</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div *ngIf="
+              routes && routes.length > 0 && verify(routes[routes.length - 1].selected, 'question') && !createQuestion
+            " class="cont-pregunta">
+            <div class="titulo-pregunta titulo-pregunta-edicion">
+              {{ question.title }}
+              <button mat-icon-button color="primary" (click)="edit(question)">
+                <mat-icon class="md-24" matTooltip="Editar Pregunta">edit_mode</mat-icon>
+              </button>
+            </div>
+            <ol type="A">
+              <li *ngFor="let alternative of question.alternatives" [ngClass]="{ correct: alternative.correct }">
+                {{ alternative.text }}
+              </li>
+            </ol>
+          </div>
+        </mat-card>
+      </div>
+      <!--Fin Preguntas-->
+    </div>
+    <!--end contend-->
+  </div>
+</div>

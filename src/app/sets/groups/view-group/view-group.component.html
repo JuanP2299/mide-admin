@@ -1,0 +1,131 @@
+<div class="cont-grid-general">
+  <div class="cont-grilla">
+    <div class="grid-header" fxLayout.xs="column" fxLayoutWrap="wrap" fxLayoutAlign.xs="start"
+      fxLayoutAlign="start stretch" fxLayoutGap="10px" fxLayoutGap.xs="0">
+      <div fxFlex.xs="100%" fxFlex="68%">
+        <h1 class="titulo-tot-admin" color="principal">
+          {{ group.name }}
+        </h1>
+      </div>
+      <!-- <div class="button-header"> -->
+      <div class="button-header" fxFlex.xs="100%" fxFlex="30%">
+        <button mat-raised-button color="primary" (click)="openAsociarUsuariosDialog(group)">Asociar usuarios</button>
+      </div>
+    </div>
+    <div fxLayout.xs="column" fxLayoutWrap="wrap" fxLayoutAlign.xs="start" fxLayoutAlign="start stretch"
+      fxLayoutGap="10px" fxLayoutGap.xs="0">
+      <div class="flex-item" fxFlex.xs="100%" fxFlex="72%">
+        <mat-card class="buscador-usuario">
+          <mat-card-content>
+            <mat-form-field>
+              <input matInput type="text" placeholder="Buscar Usuarios" [(ngModel)]="search" name="search"
+                placeholder="Buscar" (keyup)="searchFn(search)" />
+              <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+        <table class="card">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Correo electrónico</th>
+              <th>Estado</th>
+              <th>Fecha vencimiento</th>
+              <th>Codigo</th>
+              <th>Profesor</th>
+              <th>Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let code of codes | paginate: { itemsPerPage: 5, currentPage: pagination, id: 'pagination' }">
+              <td [matTooltip]="code.firstName">{{ code.firstName | truncate: 20:"..." }}</td>
+              <td [matTooltip]="code.lastName">{{ code.lastName | truncate: 20:"..." }}</td>
+              <td>{{ code.email }}</td>
+              <td>{{ code.status === 'NOT_USED' ? 'No usado' : 'Usado' }}</td>
+              <td>{{ formatDate(code.limitAt) }}</td>
+              <td>{{ code.idCode }}</td>
+              <td>
+                <input type="checkbox" (change)="onChangeProfesor($event, code)" [checked]="code.profession != ''" />
+              </td>
+              <td>
+                <button mat-icon-button (click)="deleteCode(code)" color="warn" matTooltip="Eliminar Usuario">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody>
+            <tr>
+              <td class="cont-paginator" colspan="7">
+                <pagination-controls (pageChange)="setPagination($event)" id="pagination" autoHide="true"
+                  previousLabel="Anterior" nextLabel="Próximo" screenReaderPaginationLabel="Paginación"
+                  screenReaderPageLabel="pag"></pagination-controls>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="flex-item" fxFlex.xs="100%" fxFlex="26%">
+        <mat-card class="cont-form">
+          <mat-card-header>
+            <h4 class="titulo-tot-admin">Agregar nuevo usuario</h4>
+          </mat-card-header>
+          <mat-card-content>
+            <div [formGroup]="codeForm">
+              <mat-form-field>
+                <input matInput type="text" formControlName="firstName" placeholder="*Nombre" autocomplete="off" />
+                <mat-error *ngIf="codeForm.get('firstName').touched"> Ingresa un nombre </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="text" formControlName="lastName" placeholder="*Apellido" autocomplete="off" />
+                <mat-error *ngIf="codeForm.get('lastName').touched"> Ingresa un apellido </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="email" formControlName="email" placeholder="*Correo electrónico"
+                  autocomplete="off" />
+                <mat-error *ngIf="codeForm.get('email').touched && codeForm.get('email').hasError('email')">
+                  Ingresa un correo electrónico válido
+                </mat-error>
+              </mat-form-field>
+              <!-- -->
+              <mat-form-field>
+                <input matInput [matDatepicker]="picker2" placeholder="Año de Vencimiento cupon"
+                  [matDatepickerFilter]="myFilter" readonly [formControl]="serializedDate" (click)="picker2.open()" />
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+              </mat-form-field>
+              <!-- -->
+              <div class="button-row">
+                <button mat-raised-button [disabled]="codeForm.invalid" (click)="setCode()" color="primary">
+                  Agregar Usuario 
+                </button>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="upload-card">
+          <mat-card-header>
+            <h4 class="titulo-tot-admin">Cargar usuarios</h4>
+          </mat-card-header>
+          <mat-card-content>
+            <div>
+              <p>Ingrese una planilla para cargar los usuarios</p>
+              <input class="file-upload" type="file" (change)="onFileChange($event)" multiple="false"
+                accept=".xls,.xlsx, .csv" #inputFile />
+              <div class="button-row">
+                <button mat-raised-button [disabled]="!fileUploadValid" (click)="uploadFile()" color="primary">
+                  Cargar Usuarios
+                </button>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <button class="btn-return" mat-button color="primary" [routerLink]="['/sets', set?.idCategory, 'groups-actions']">
+    <i class="material-icons">keyboard_backspace</i> Volver
+  </button>
+</div>

@@ -1,0 +1,252 @@
+<div class="cont-grid-general">
+  <div class="cont-sets">
+    <div class="cont-grilla">
+      <div fxLayout.xs="column" fxLayoutWrap="wrap" fxLayoutAlign.xs="start" fxLayoutAlign="space-between start"
+        fxLayoutGap="0" fxLayoutGap.xs="0">
+        <div fxFlex="38%">
+          <button mat-raised-button color="primary" (click)="goToCourses()">
+            <i class="material-icons">keyboard_backspace</i>
+            Volver a Cursos
+          </button>
+
+          <h1 class="titulo-tot-admin">Conjuntos de Preguntas</h1>
+        </div>
+        <div fxFlex="auto">
+          <mat-form-field>
+            <input matInput name="name" (keyup)="search($event.target.value)" />
+            <mat-placeholder>
+              <mat-icon>search</mat-icon>
+              Buscar
+            </mat-placeholder>
+          </mat-form-field>
+        </div>
+        <div fxFlex="30%">
+          <button mat-raised-button class="btn-agregar" color="primary" (click)="add()">
+            <i class="material-icons">playlist_add</i>
+            Crear nuevo conjunto de preguntas
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="createSet && createSet.idCategory">
+        <mat-card class="tot-card card-create-set">
+          <mat-card-content>
+            <h5>Nuevo conjunto de preguntas</h5>
+            <form [formGroup]="setForm" (submit)="save()" class="formTot">
+              <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="2">
+                <div fxFlex="48">
+                  <mat-form-field>
+                    <input matInput type="text" formControlName="name" autofocus autocomplete="off" />
+                    <mat-placeholder>Nombre de conjunto</mat-placeholder>
+                    <mat-error *ngIf="setForm.get('name').touched && setForm.get('name').hasError('required')">
+                      Campo requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="48">
+                  <mat-form-field>
+                    <mat-select formControlName="modo" (value)="modos[0].value"
+                      (selectionChange)="changeValueModo($event.value)">
+                      <mat-option *ngFor="let modo of modos" [value]="modo.value">
+                        {{ modo.text }}
+                      </mat-option>
+                    </mat-select>
+                    <span matPrefix>Modo: &nbsp;&nbsp;</span>
+                    <mat-error *ngIf="setForm.get('modo').touched && setForm.get('modo').hasError('required')">
+                      Campo requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div *ngIf="evaluacion" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px"
+                class="stats-cards">
+                <div fxFlex="auto">
+                  <mat-form-field>
+                    <mat-select formControlName="duracion" [(value)]="duraciones[0].value">
+                      <mat-option *ngFor="let duracion of duraciones" [value]="duracion.value">
+                        {{ duracion.text }}
+                      </mat-option>
+                    </mat-select>
+                    <span matPrefix>Duración: &nbsp;&nbsp;</span>
+                    <mat-error *ngIf="setForm.get('duracion').touched && setForm.get('duracion').hasError('required')">
+                      Campo requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="auto">
+                  <mat-form-field>
+                    <mat-select formControlName="intento" [(value)]="intentos[0].value">
+                      <mat-option *ngFor="let intento of intentos" [value]="intento.value">
+                        {{ intento.text }}
+                      </mat-option>
+                    </mat-select>
+                    <span matPrefix>Intentos: &nbsp;&nbsp;</span>
+                    <mat-error *ngIf="setForm.get('intento').touched && setForm.get('intento').hasError('required')">
+                      Campo requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" class="stats-cards">
+                <div fxFlex="20%">
+                  <mat-form-field>
+                    <mat-select [(ngModel)]="selectedAsignatura" (selectionChange)="changeValueAsignatura($event.value)"
+                      formControlName="asignatura">
+                      <mat-option *ngFor="let asignatura of asignaturas" [value]="asignatura">
+                        {{ asignatura }}
+                      </mat-option>
+                    </mat-select>
+                    <span matPrefix>Asignatura: &nbsp;&nbsp;</span>
+                    <mat-error
+                      *ngIf="setForm.get('asignatura').touched && setForm.get('asignatura').hasError('required')">
+                      Campo requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="auto">
+                  <mat-form-field>
+                    <input matInput type="text" formControlName="desc" maxlength="50" autocomplete="off" />
+                    <mat-placeholder>Descripción</mat-placeholder>
+                    <mat-hint align="end">{{ setForm.get('desc').value.length }} / 50</mat-hint>
+                    <mat-error *ngIf="setForm.get('desc').touched && setForm.get('desc').hasError('required')">
+                      Campo requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="auto">
+                  <mat-form-field>
+                    <input matInput type="text" formControlName="createdBy" autocomplete="off" />
+                    <mat-placeholder>Fuente</mat-placeholder>
+                    <mat-error
+                      *ngIf="setForm.get('createdBy').touched && setForm.get('createdBy').hasError('required')">
+                      Campo requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="auto">
+                  <mat-form-field>
+                    <input matInput type="text" formControlName="years" autocomplete="off" />
+                    <mat-placeholder>Año de creación de preguntas</mat-placeholder>
+                    <span matPrefix
+                      matTooltip="Año o período de años en que fue creado el material. Ejemplo 2010-2017"><i
+                        class="material-icons">help</i></span>
+                    <mat-error *ngIf="setForm.get('years').touched && setForm.get('years').hasError('required')">
+                      Campo requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" class="stats-cards">
+                <div *ngIf="this.isOtros" fxFlex="auto">
+                  <mat-form-field>
+                    <textarea matInput placeholder="Asignatura" formControlName="newAsignature" autocomplete="off"
+                      matAutosizeMinRows="2" matAutosizeMaxRows="5">
+                    </textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" class="stats-cards">
+                <div fxFlex="100%">
+                  <mat-form-field>
+                    <textarea matInput placeholder="Acerca de" formControlName="disclaimer" autocomplete="off"
+                      matAutosizeMinRows="2" matAutosizeMaxRows="5">
+                    </textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" class="stats-cards">
+                <div fxFlex="100%">
+                  <mat-form-field>
+                    <input matInput type="text" placeholder="URL de Video (Opcional)" formControlName="video"
+                      autocomplete="off" />
+                    <mat-error *ngIf="setForm.get('video').hasError('pattern')">
+                      Para que la URL sea valida debe comenzar con el siguiente formato "https://www.youtube.com/watch?v="
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" class="stats-cards">
+                <div fxFlex="100%">
+                  <mat-form-field>
+                    <input matInput type="text" placeholder="URL de interés (Opcional)" formControlName="url"
+                      autocomplete="off" />
+                    <mat-error *ngIf="setForm.get('url').hasError('pattern')">
+                      Debe proporcionar una URL válida "https:// o http://"
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" class="stats-cards">
+                <div fxFlex="100%">
+                  <span>Imagen del docente:</span>
+                  <input type="file" (change)="onFileChange($event)" multiple="false" />
+                </div>
+                <div fxFlex="100%" class="mat-card-actions">
+                  <button mat-raised-button color="primary" type="submit" [disabled]="setForm.invalid">
+                    Guardar Conjunto
+                  </button>
+                  <button mat-button type="button" (click)="cancelAdd()">Cancelar</button>
+                </div>
+              </div>
+
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div fxLayout.xs="column" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="start stretch" fxLayoutGap="15px"
+        fxFill class="cont-cajas-inicio">
+        <div fxFlex="100%" *ngIf="(!sets || (sets && sets.length === 0)) && showActive">
+          <div class="alert alert-danger text-center">Usted no ha creado ningún conjunto de preguntas.</div>
+        </div>
+
+        <!--SET ITEM -->
+        <ng-container *ngIf="!loading">
+          <div *ngFor="let set of sets" class="flex-item" fxFlex.xs="100%" fxFlex.sm="48%" fxFlex="32%">
+            <mat-card class="tot-card">
+                <mat-card-header [routerLink]="['/sets', set.idCategory]"
+                  [ngClass]="{ 'pendiente-publicacion': set.type === 'draft' }"
+                  [ngStyle]="{ 'background-color': getColor(set.asignatura) }">
+                  <div class="header-card">
+                    <div class="text-card">
+                      <mat-card-subtitle>
+                        <span>
+                          {{ getSetMode(set)}}
+                        </span>
+                      </mat-card-subtitle>
+                      <mat-card-title>
+                        {{ set.name }}
+                        <span class="estado-conjunto" *ngIf="set.type === 'draft'"> Pendiente de publicación </span>
+                        <span class="estado-conjunto" *ngIf="set.type === 'production'"> Conjunto Publicado </span>
+                      </mat-card-title>
+                    </div>
+                    <div class="imagen-profesor">
+                      <img [src]="set.fotoProfesor" />
+                    </div>
+                  </div>
+                </mat-card-header>             
+              <mat-card-content>
+                <p class="desc-set">{{ set.desc }}</p>
+                
+                <p>
+                  <span class="autor-set">Fuente: {{ set.createdBy }}</span>
+                </p>
+                <p>
+                  <span class="periodo-set">Año de creación de preguntas: {{ set.years }}</span>
+                </p>
+                <button mat-button color="warn" (click)="deleteSet(set)" class="btn-eliminar-set">Eliminar</button>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </ng-container>
+        <!-- -->
+      </div>
+    </div>
+  </div>
+</div>

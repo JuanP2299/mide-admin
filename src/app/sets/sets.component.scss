@@ -1,0 +1,43 @@
+.cont-sets {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cont-titulo {
+  margin-top: 30px;
+  padding-bottom: 15px;
+  h1 {
+    margin-bottom: 0;
+    width: calc(100% - 350px);
+    display: inline-block;
+    padding-bottom: 3px;
+  }
+}
+
+.sub-tools {
+  //width: calc(100% - 600px);
+  margin-right: 12px;
+  text-align: right;
+  padding: 15px 0;
+  display: inline-block !important;
+}
+
+mat-button-toggle-group {
+  display: flex;
+  float: right;
+
+  .square-buttons {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 4px;
+  }
+}
+
+.mat-fab {
+  margin-left: 30px;
+}
+
+.mat-button-toggle-standalone.mat-button-toggle-appearance-standard, .mat-button-toggle-group-appearance-standard {
+  border: none;
+}

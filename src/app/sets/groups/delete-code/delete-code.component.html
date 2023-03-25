@@ -1,0 +1,19 @@
+<div *ngIf="active" class="window-group">
+  <h3>
+    <mat-icon class="mat-24">delete</mat-icon>
+    Eliminar cupón</h3>
+  <p>¿Está seguro de eliminar el cupón asignado al correo {{code.email}} ?</p>
+  <div class="button-row">
+    <button mat-raised-button color="warn"
+            (click)="deleteCode(code)">
+      Eliminar
+    </button>
+    <button  mat-raised-button (click)="closeDialog()">
+      Cancelar
+    </button>
+  </div>
+</div>
+<div *ngIf="!active" class="text-center">
+  <mat-spinner></mat-spinner>
+  <p>Eliminando cupón</p>
+</div>

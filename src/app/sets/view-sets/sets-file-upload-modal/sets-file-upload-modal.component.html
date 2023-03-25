@@ -1,0 +1,21 @@
+<div *ngIf="!loading">
+  <div *ngIf="!exist">
+    <h3>
+      <mat-icon class="mat-24">attach_file</mat-icon>
+      Cargar Preguntas
+    </h3>
+    <p>Ingrese una planilla xls/xlsx para cargar las preguntas</p>
+    <div>
+      <input type="file" (change)="onFile($event)" multiple="false" accept=".xls,.xlsx, .csv" />
+    </div>
+
+    <div class="button-row">
+      <button mat-button color="warn" (click)="uploadFile()">Cargar preguntas</button>
+      <button mat-button (click)="closeDialog(false)">Cancelar</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="loading" class="text-center">
+  <mat-spinner></mat-spinner>
+  <p>Cargando...</p>
+</div>

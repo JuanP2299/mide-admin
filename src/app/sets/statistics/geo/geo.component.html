@@ -1,0 +1,97 @@
+<div class="contenido" *ngIf="loadComplete">
+  <div class="cont-submenu">
+    <div fxLayout.xs="row" fxLayoutWrap="wrap" fxFlexFill fxLayoutAlign="space-between center">
+
+      <div class="flex-item" fxFlex="30%">
+        <!--     <mat-chip-list>
+             <mat-chip (click)="selectChart(1)" [color]="activeChart === 1 ? 'primary' :  'default'" selected="true">Todos
+               los usuarios
+             </mat-chip>
+             <mat-chip (click)="selectChart(2)" [color]="activeChart === 2 ? 'primary' :  'default'" selected="true">
+               Usuarios salud
+             </mat-chip>
+           </mat-chip-list>-->
+      </div>
+
+      <div class="flex-item" fxFlex="70%">
+        <mat-list class="button-dates">
+          <mat-list-item>
+            <div class="button-row">
+              <button mat-button [color]="day === 7 ? 'primary' :  'default'" (click)="callInfoDate(7)">Ultimos 7
+                días
+              </button>
+              <button mat-button [color]="day === 30 ? 'primary' :  'default'" (click)="callInfoDate(30)">Ultimos
+                30 días
+              </button>
+              <button mat-button [color]="day === 0 ? 'primary' :  'default'" (click)="callInfoDate(0)">Desde el
+                comienzo
+              </button>
+            </div>
+            <button mat-mini-fab (click)="updateCharts()" color="primary" mat-tooltip="Actualizar Estadísticas"><i
+              class="material-icons">refresh</i></button>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+  </div>
+
+
+  <div fxLayout.xs="row" fxLayoutAlign="center" fxLayoutGap="10px" fxFlexFill *ngIf="activeChart === 1">
+    <!--1-->
+    <mat-card fxFlex="65%" fxFlex.lt-md="100%">
+      <mat-card-content>
+        <div class="cont_chart1">
+         
+         <!-- <google-chart #cchart [data]="chartDataGeneral" *ngIf="existChart">
+          </google-chart>-->
+          <h4 *ngIf="!existChart">No existe información relacionada</h4>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card fxFlex="35%" fxFlex.lt-md="100%">
+      <mat-card-header>
+        <mat-form-field>
+          <mat-select placeholder="Seleccionar" [(ngModel)]="myState" color="primary">
+            <mat-option *ngFor="let item of typeChartCountry" [value]="item.value" (click)="selectTypeCountry(item)">
+              {{ item.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </mat-card-header>
+      <mat-card-content>
+
+        <div class="cont_chart cont-tabla no-borders">
+          <!--<h3 class="titulo-tabla-grafico"><i class="material-icons">chevron_right</i> {{totalTitle}}</h3>-->
+          <table>
+            <thead>
+            <tr>
+              <th>País</th>
+              <th>N° Usuarios</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+              *ngFor="let item of totalData | paginate: { itemsPerPage: 5, currentPage: pagination, id: 'pagination' }">
+              <td>{{item[0]}}</td>
+              <td>{{item[1]}}</td>
+            </tr>
+            <tr class="cont-paginator">
+              <td colspan="2">
+                <pagination-controls (pageChange)="setPagination($event)" id="pagination" autoHide="true"
+                                     previousLabel="Anterior"
+                                     nextLabel="Próximo"
+                                     screenReaderPaginationLabel="Paginación"
+                                     screenReaderPageLabel="pag"></pagination-controls>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="mensaje-tabla" *ngIf="totalData.length === 0">
+            <h4>No Existe información relacionada.</h4>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

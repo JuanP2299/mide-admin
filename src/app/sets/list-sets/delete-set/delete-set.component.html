@@ -1,0 +1,20 @@
+<div *ngIf="active">
+  <h3>
+    <mat-icon class="mat-24">delete</mat-icon>
+    Eliminar Conjunto</h3>
+  <p>Al eliminar este conjunto se perderan los cambios guardados</p>
+  <p>¿Está seguro de continuar?</p>
+  <div class="button-row">
+    <button mat-button color="warn"
+            (click)="deleteSet()">
+      Eliminar
+    </button>
+    <button  mat-button (click)="closeDialog()">
+      Cancelar
+    </button>
+  </div>
+</div>
+<div *ngIf="!active" class="text-center">
+  <mat-spinner></mat-spinner>
+  <p>Eliminando <br>conjunto...</p>
+</div>

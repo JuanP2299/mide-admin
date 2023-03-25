@@ -1,0 +1,33 @@
+<div *ngIf="!loading">
+  <div *ngIf="!exist">
+    <div class="header-modal">
+      <h2>Asociar grupo</h2>
+      <button mat-button color="warn" (click)="closeDialog(true)">
+        <span class="material-icons">
+          close
+        </span>
+      </button>
+    </div>
+
+    <div class="body-modal">
+      <p>Seleccione el grupo:</p>
+      <mat-select placeholder="Filtrar por grupo" [(ngModel)]="opcionSeleccionadoGroups" (selectionChange)="selectGrupo()">
+        <mat-option *ngFor="let group of groups" [value]="group">
+          {{ group.name }}
+        </mat-option>
+      </mat-select>
+    </div>
+    <br />
+    <div class="button-row" style="margin-top: 20px">
+      <button mat-button color="warn" (click)="asociarGrupo()" class="btnOk">Aceptar 
+        <span class="material-icons">
+          done
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+<div *ngIf="loading" class="text-center">
+  <mat-spinner></mat-spinner>
+  <p>Cargando...</p>
+</div>

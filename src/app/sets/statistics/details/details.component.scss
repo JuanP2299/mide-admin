@@ -1,0 +1,264 @@
+.correct {
+  color: green;
+  font-weight: bold;
+}
+
+.content-question {
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  //margin-top: 30px;
+  //align-self:center;
+  h3 {
+    //text-transform: uppercase;
+    font-size: 20px;
+    color: #666;
+    letter-spacing: 1px;
+    line-height: 1.4;
+  }
+  ul {
+    padding-left: 20px;
+  }
+}
+
+/*.cont-btn-dates{
+  display: flex;
+  margin-top: 15px;
+  justify-content: space-between;
+  width: 100%;
+  padding: 15px 0;
+  height: 30px;
+  //border: 1px solid red;
+  .button-dates{
+    align-self: flex-end;
+    li{
+
+    }
+  }
+}*/
+
+.cont-pregunta {
+  transition: all .3s ease-out;
+  border-top: 1px solid #DDD;
+  &:first-child {
+    border-top: none;
+  }
+  .titulo-pregunta {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.4;
+    border-bottom: 1px dashed #DDD;
+    margin-bottom: 15px;
+    padding: 15px;
+    color: #666;
+    font-weight: 500;
+  }
+
+}
+
+.numero-pregunta {
+  margin: 30px 0;
+  line-height: 1.4;
+  color: #666;
+}
+
+.list-cat {
+  mat-list-item {
+    background-color: #fff;
+    border-radius: 10px;
+
+  }
+}
+
+mat-list.lista-cat {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  mat-list-item {
+    border-top: none;
+    padding: 10px;
+    padding-left: 0;
+    position: relative;
+    transition: all .3s ease-out;
+    color: #333;
+    cursor: pointer;
+    border-bottom: 1px solid #DDD;
+/*    &:last-child {
+      border-bottom: 1px solid #DDD;
+    }*/
+    &:hover {
+      //background-color: #f1f1f1;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    }
+/*    .titulo-cat {
+      text-transform: uppercase;
+      font-size: 11px;
+    }*/
+  }
+}
+
+.contenido {
+  //background-color: #e0e0e0;
+  //padding: 15px;
+}
+
+.cont-stats-day {
+  text-align: right;
+}
+
+.cont-submenu {
+  margin-bottom: 15px;
+}
+
+mat-card-header {
+  h3 {
+    font-size: 16px;
+    margin: 0;
+    //font-size: 12px;
+  }
+}
+
+.example-card {
+  width: 400px;
+}
+
+.example-header-image {
+  background-size: cover;
+}
+
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  display: inline-block;
+  float: left;
+}
+
+.nombre-mensaje {
+  width: calc(100% - 40px);
+  margin-left: 5px;
+  margin-top: 0;
+  text-transform: uppercase;
+  display: inline-block;
+  font-size: 1rem;
+  color: #666;
+  line-height: 1;
+}
+
+.datos-mensaje {
+  display: block;
+  border-bottom: 1px solid #DDD;
+  padding-bottom: 10px;
+  color: #666;
+  span {
+    margin-left: 10px;
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+  .material-icons {
+    font-size: 11px;
+  }
+  .status-mensaje {
+    width: 100%;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #c5381c;
+    font-weight: 700;
+    font-size: 10px;
+    margin-left: 0;
+    display: block;
+  }
+}
+
+.datos-mensaje:last-child{
+  border-bottom:none;
+  padding-top: 15px;
+  border-top: 1px solid #DDD;
+}
+
+.like-mensaje {
+  float: right;
+}
+
+.comentario {
+  font-size: 12px;
+  color: green;
+  text-align: center;
+  line-height:1.2;
+  //width: 100%;
+  max-width: 320px;
+  padding:20px;
+  border: 1px solid #DDD;
+  border-radius:5px;
+  margin: 20px auto;
+  mat-card-header {
+    //border-bottom: 1px solid #DDD;
+    margin-bottom: 0;
+  }
+}
+
+.paginacion-mensajes {
+  text-align: center;
+  .ngx-pagination .current {
+    background: transparent !important;
+    color: #0C776F !important;
+  }
+}
+
+.mensaje-detalle{
+  font-size: 12px;
+  color: green;
+  text-align: center;
+  width: 90%;
+  padding:20px;
+  border: 1px solid #DDD;
+  border-radius:5px;
+  margin: 0 auto;
+  line-height: 1.4;
+}
+.columna-comentarios{
+  //border: 1px solid #DDD;
+  //border-radius: 5px;
+  margin: 10px;
+  padding: 0 15px;
+  border-bottom:5px solid #DDD;
+  h3{
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+.cont-n-pregunta{
+  .mat-card-header-text{
+    margin: 0 !important;
+    display: none;
+  }
+}
+.n-pregunta{
+  font-weight: 700;
+}
+.caja-comentarios{
+  border: 1px solid #DDD;
+  border-radius: 5px;
+  margin: 10px;
+}
+.titulo-cat {
+  font-size: 14px;
+  font-weight: 500;
+  color: #0C776F;
+  text-transform: uppercase;
+}
+
+.mensaje-modal{
+  font-size: 12px;
+  color: green;
+  text-align: center;
+  line-height:1.2;
+  //width: 100%;
+  max-width: 320px;
+  padding:20px;
+  border: 1px solid #DDD;
+  border-radius:5px;
+  margin: 20px auto;
+}

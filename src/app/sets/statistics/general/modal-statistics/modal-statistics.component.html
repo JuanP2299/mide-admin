@@ -1,0 +1,61 @@
+<!--<div *ngIf="!active">
+  <div fxLayout.xs="column" fxLayout="row" fxFlexFill fxLayoutAlign="start" fxLayoutGap="10px">
+    <div fxFlex="auto">
+  <mat-card>
+    <mat-card-header>
+      <h3>Pregunta N° {{question.number}}</h3>
+    </mat-card-header>
+    <mat-card-content>
+        <p>{{question.title}}</p>
+        <ol type="A">
+          <li *ngFor="let alternative of alternatives" [ngClass]="{'correct': alternative.correct}">
+            {{alternative.text}}
+          </li>
+        </ol>
+        <div>
+          <google-chart [data]="distChart" *ngIf="distChart.dataTable.length > 0"></google-chart>
+        </div>
+        <div>
+          <google-chart [data]="timeChart" *ngIf="timeChart.dataTable.length > 1"></google-chart>
+          <h4 *ngIf="this.maxCont" class="mensaje-modal">La cantidad de respuestas mayores a 100 segundos se encuentran agrupadas en el bloque continuo a 100</h4>
+        </div>
+    </mat-card-content>
+  </mat-card>
+    </div>
+    <div fxFlex="30%">
+      <ngx-loading [show]="!loadMsgCompleted" [config]="{ backdropBorderRadius: '2px', fullScreenBackdrop: false }"></ngx-loading>
+      <mat-card class="comentario" *ngIf="messages.length > 0">
+        <mat-card-header>
+          <h4 class="mensaje-modal">{{'Esta pregunta tiene ' + messages.length + (messages.length > 1 ? ' comentarios' : ' comentario')}}</h4>
+
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list *ngFor="let msg of messages | paginate: { itemsPerPage: 5, currentPage: p }">
+            <img src="{{msg.image}}" class="user-avatar">
+            <h4 class="nombre-mensaje">{{msg.name}}</h4>
+            <p class="texto-mensaje">{{msg.text}}</p>
+            <div class="datos-mensaje">
+              <span class="fecha-mensaje"><i class="material-icons">today</i> {{msg.createdAt}}</span>
+              <span class="like-mensaje"><i class="material-icons">thumb_up</i> {{msg.like}}</span>
+              <span *ngIf="msg.status === 'Eliminado'" class="status-mensaje">Mensaje eliminado</span>
+            </div>
+          </mat-list>
+          <div class="paginacion-mensajes">
+            <pagination-controls (pageChange)="p = $event" autoHide="true"
+                                 previousLabel=" "
+                                 nextLabel=" "
+                                 screenReaderPaginationLabel="Paginación"
+                                 screenReaderPageLabel="pag"></pagination-controls>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+
+</div>
+</div>
+<div *ngIf="active" class="text-center">
+  <mat-progress-spinner class="spinnerModal" mode="indeterminate"></mat-progress-spinner>
+  <p>Cargando...</p>
+</div>
+-->

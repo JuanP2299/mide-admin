@@ -1,0 +1,19 @@
+<div *ngIf="!loading">
+  <div *ngIf="!exist">
+    <h3>
+      <mat-icon class="mat-24">attach_file</mat-icon>
+      Subir Archivo
+    </h3>
+    <div>
+      <input type="file" (change)="onFileChange($event)" multiple="false" />
+    </div>
+    <div class="button-row">
+      <button mat-button color="warn" (click)="uploadFile()">Aceptar</button>
+      <button mat-button (click)="closeDialog(false)">Cancelar</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="loading" class="text-center">
+  <mat-spinner></mat-spinner>
+  <p>Cargando...</p>
+</div>

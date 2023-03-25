@@ -1,0 +1,26 @@
+.modal-sm{
+    h2{
+        font-size: 1.8rem;
+        margin: 0;
+    }
+}
+.button-row{
+    display: flex;
+    margin-top: 15px;
+    justify-content: space-between;
+    .btnCancel{
+        background-color: #d2d2d2;
+        border-radius: .4rem;
+    }
+    
+    .btnOk{
+        background-color: green;
+        border-radius: .4rem;
+        color: #fff;
+    }
+    span.material-icons {
+        font-size: 1.2rem;
+        margin-left: .8rem;
+    }
+}
+

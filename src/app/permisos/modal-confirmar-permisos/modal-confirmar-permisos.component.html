@@ -1,0 +1,22 @@
+<div *ngIf="!loading" class="modal-sm">
+  <div>
+    <h2>Actualizar permisos</h2>
+    <p>El permiso del usuario selecionado será actualizado</p>
+  </div>
+  <div class="button-row" style="margin-top: 20px">
+    <button mat-button (click)="closeDialog(true)" class="btnCancel">Cancelar 
+      <span class="material-icons">
+        close
+      </span>
+    </button>
+    <button mat-button color="warn" (click)="updatePermisos()" class="btnOk">Aceptar 
+      <span class="material-icons">
+        done
+      </span>
+    </button>
+  </div>
+</div>
+<div *ngIf="loading" class="text-center">
+  <mat-spinner></mat-spinner>
+  <p>Cargando...</p>
+</div>

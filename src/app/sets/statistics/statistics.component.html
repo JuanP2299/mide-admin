@@ -1,0 +1,56 @@
+<h4>Usuarios del Set</h4>
+<mat-card class="buscador-usuario">
+  <mat-card-content>
+    <mat-form-field>
+      <input matInput type="text" placeholder="Buscar Usuarios" [(ngModel)]="search" name="search" placeholder="Buscar"
+        (keyup)="searchFn(search)" />
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+  </mat-card-content>
+</mat-card>
+<table class="card" *ngIf="loadComplete">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Correo electrónico</th>
+      <th>Acción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users | paginate: { itemsPerPage: 5, currentPage: pagination, id: 'pagination' }">
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+      <td class="contenido-accion">
+        <ul class="icon-accion">
+          <li>
+            <button mat-icon-button color="primary" (click)="getUserStatistics(user)"
+              [routerLink]="['user', user?.idUser]">
+              <span class="material-icons" matTooltip="Ver Estadísticas">
+                bar_chart
+              </span>
+            </button>
+          </li>
+          <li>
+            <button *ngIf="user.hasOpenQuestion" mat-icon-button color="primary" (click)="getUserStatistics(user)"
+              [routerLink]="['open-questions', this.idCategory, user?.idUser, user?.name, user?.email]">
+              <span class="material-icons" matTooltip="Ver Respuestas">
+                quiz
+              </span>
+            </button>
+          </li>
+        </ul>
+
+
+      </td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td class="cont-paginator" colspan="7">
+        <pagination-controls (pageChange)="setPagination($event)" id="pagination" autoHide="true"
+          previousLabel="Anterior" nextLabel="Próximo" screenReaderPaginationLabel="Paginación"
+          screenReaderPageLabel="pag"></pagination-controls>
+      </td>
+    </tr>
+  </tbody>
+</table>

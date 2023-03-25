@@ -1,0 +1,54 @@
+<div *ngIf="!loading">
+  <div *ngIf="!exist">
+    <h3>Asociar usuarios</h3>
+    <div>
+      <p>Seleccione la escuela:</p>
+      <mat-select placeholder="Filtrar por escuela" [(ngModel)]="opcionSeleccionadoEscuela" (selectionChange)="selectEscuela()">
+        <mat-option *ngFor="let escuela of escuelas" [value]="escuela.idOrganization">
+          {{ escuela.name }}
+        </mat-option>
+      </mat-select>
+    </div>
+    <br />
+    <div *ngIf="showSelectCurso">
+      <p>Seleccione el curso:</p>
+      <mat-select placeholder="Filtrar por curso" [(ngModel)]="opcionSeleccionadoCurso" (selectionChange)="selectCurso()">
+        <mat-option *ngFor="let curso of cursos" [value]="curso.idCourse">
+          {{ curso.name }}
+        </mat-option>
+      </mat-select>
+    </div>
+    <br />
+    <div *ngIf="showSelectSet">
+      <p>Seleccione el set:</p>
+      <mat-select placeholder="Filtrar por set" [(ngModel)]="opcionSeleccionadoSet" (selectionChange)="selectSet()">
+        <mat-option *ngFor="let set of sets" [value]="set.idCategory">
+          {{ set.name }}
+        </mat-option>
+      </mat-select>
+    </div>
+    <br />
+    <div *ngIf="showSelectGroup">
+      <p>Seleccione el grupo:</p>
+      <mat-select
+        style="margin-top: 20px"
+        *ngIf="showSelectGroup"
+        placeholder="Filtrar por grupo"
+        [(ngModel)]="opcionSeleccionadoGroup"
+        (selectionChange)="selectGroup()"
+      >
+        <mat-option *ngFor="let group of groups" [value]="group.idGroup">
+          {{ group.name }}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div class="button-row" style="margin-top: 20px">
+      <button mat-button color="warn" (click)="asociarUsuarios()">Asociar usuarios</button>
+      <button mat-button (click)="closeDialog(false)">Cancelar</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="loading" class="text-center">
+  <mat-spinner></mat-spinner>
+  <p>Cargando...</p>
+</div>

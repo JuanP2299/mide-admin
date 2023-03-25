@@ -1,0 +1,63 @@
+<div class="cont-sets">
+  <div class="cont-grilla">
+    <div class="grid-header" fxLayout.xs="column" fxLayoutWrap="wrap" fxLayoutAlign.xs="start"
+      fxLayoutAlign="start stretch" fxLayoutGap="10px" fxLayoutGap.xs="0">
+      <div fxFlex.xs="100%" fxFlex="68%">
+        <h1 class="titulo-tot-admin" color="principal">Sets por defecto</h1>
+      </div>
+    </div>
+    <div fxLayout.xs="column" fxLayoutWrap="wrap" fxLayoutAlign.xs="start" fxLayoutAlign="start stretch"
+      fxLayoutGap="10px" fxLayoutGap.xs="0">
+      <div class="flex-item" fxFlex.xs="100%" fxFlex="100%">
+        <mat-card class="buscador-set">
+          <mat-card-content>
+            <mat-form-field>
+              <input matInput type="text" placeholder="Buscar Sets" [(ngModel)]="search" name="search"
+                placeholder="Buscar" (keyup)="searchFn(search)" />
+              <mat-icon matPrefix class="icon-search">search</mat-icon>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+        <table class="card">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Asignatura</th>
+              <th>Fecha de creación</th>
+              <th>Creado por</th>
+              <th>Curso</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let set of sets | paginate: { itemsPerPage: 5, currentPage: pagination, id: 'pagination' }">
+              <td>{{ set.name }}</td>
+              <td>{{ set.desc }}</td>
+              <td>{{ set.asignatura }}</td>
+              <td>{{ set.years }}</td>
+              <td>{{ set.createdBy }}</td>
+              <td>{{ set.course }}</td>
+              <td>
+                <button mat-icon-button (click)="deleteSet(set)" color="warn" matTooltip="Quitar Set">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody>
+            <tr>
+              <td class="cont-paginator" colspan="7">
+                <pagination-controls (pageChange)="setPagination($event)" id="pagination" autoHide="true"
+                  previousLabel="Anterior" nextLabel="Próximo" screenReaderPaginationLabel="Paginación"
+                  screenReaderPageLabel="pag"></pagination-controls>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <button class="btn-return" mat-button color="primary" [routerLink]="['/home']">
+    <i class="material-icons">keyboard_backspace</i> Volver
+  </button>
+</div>

@@ -1,0 +1,120 @@
+<div class="cont-grid-general">
+  <div class="cont-sets">
+    <div class="cont-grilla">
+      <div fxLayout.xs="column" fxLayoutWrap="wrap" fxLayoutAlign.xs="start" fxLayoutAlign="space-between start"
+        fxLayoutGap="0" fxLayoutGap.xs="0">
+        <div fxFlex="38%">
+          <h1 class="titulo-tot-admin">Escuelas</h1>
+        </div>
+        <div fxFlex="auto">
+          <mat-form-field>
+            <input matInput name="name" (keyup)="search($event.target.value)" />
+            <mat-placeholder>
+              <mat-icon>search</mat-icon>
+              Buscar
+            </mat-placeholder>
+          </mat-form-field>
+        </div>
+        <div fxFlex="30%" *ngIf="this.isAdmin === '1'">
+          <button mat-raised-button class="btn-agregar" color="primary" (click)="add()">
+            <i class="material-icons">playlist_add</i>
+            Crear nueva escuela
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="createOrganization && createOrganization.idOrganization">
+        <mat-card class="tot-card card-create-set">
+          <mat-card-content>
+            <h5>Nueva escuela</h5>
+            <form [formGroup]="organizationForm" (submit)="save()" class="formTot">
+              <div fxLayout.xs="column" fxLayoutWrap="wrap" fxLayoutAlign.xs="start" fxLayoutAlign="start"
+                fxLayoutGap="2%">
+                <div fxFlex="100%">
+                  <mat-form-field>
+                    <input matInput type="text" formControlName="name" autofocus autocomplete="off" />
+                    <mat-placeholder>Nombre de la escuela</mat-placeholder>
+                    <mat-error
+                      *ngIf="organizationForm.get('name').touched && organizationForm.get('name').hasError('required')">
+                      Campo requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="auto">
+                  <mat-form-field>
+                    <input matInput type="text" formControlName="comuna" maxlength="50" autocomplete="off" />
+                    <mat-placeholder>Comuna</mat-placeholder>
+                    <mat-error *ngIf="
+                        organizationForm.get('comuna').touched && organizationForm.get('comuna').hasError('required')
+                      ">
+                      Campo requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="auto">
+                  <mat-form-field>
+                    <input matInput type="text" formControlName="email" autocomplete="off" />
+                    <mat-placeholder>Email</mat-placeholder>
+                    <mat-error *ngIf="
+                        organizationForm.get('email').touched && organizationForm.get('email').hasError('required')
+                      ">
+                      Campo requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="auto">
+                  <mat-form-field>
+                    <input matInput type="text" formControlName="phone" autocomplete="off" />
+                    <mat-placeholder>Fono</mat-placeholder>
+                    <mat-error *ngIf="
+                        organizationForm.get('phone').touched && organizationForm.get('phone').hasError('required')
+                      ">
+                      Campo requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="100%" class="mat-card-actions">
+                  <button mat-raised-button color="primary" type="submit" [disabled]="organizationForm.invalid">
+                    Guardar Escuela
+                  </button>
+                  <button mat-button type="button" (click)="cancelAdd()">Cancelar</button>
+                </div>
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div fxLayout.xs="column" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="start stretch" fxLayoutGap="15px"
+        fxFill class="cont-cajas-inicio">
+        <div fxFlex="100%" *ngIf="(!organizations || (organizations && organizations.length === 0)) && showActive">
+          <div class="alert alert-danger text-center">Usted no ha creado ninguna Escuela.</div>
+        </div>
+
+        <!--ORGANIZATION ITEM -->
+        <div *ngFor="let organization of organizations" class="flex-item" fxFlex.xs="100%" fxFlex.sm="48%" fxFlex="32%">
+          <mat-card class="tot-card">
+            <mat-card-header (click)="viewOrganization(organization)">
+              <mat-card-title>
+                {{ organization.name }}
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>
+                <span class="autor-set">Comuna: {{ organization.comuna }}</span>
+              </p>
+              <p>
+                <span class="autor-set">Email : {{ organization.email }}</span>
+              </p>
+              <p>
+                <span class="autor-set">Fono: {{ organization.fono }}</span>
+              </p>
+              <p></p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

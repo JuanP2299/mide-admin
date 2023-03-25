@@ -1,0 +1,20 @@
+<div *ngIf="active" class="window-group">
+  <h3>
+    <mat-icon class="mat-24">delete</mat-icon>
+    Eliminar Grupo</h3>
+    <p>Al eliminar el grupo se eliminaran todos los cupones asignados</p>
+    <p>¿Está seguro de continuar?</p>
+  <div class="button-row" class="text-right">
+    <button mat-button color="warn"
+            (click)="deleteGroup(group)">
+      Eliminar
+    </button>
+    <button  mat-button (click)="closeDialog()">
+      Cancelar
+    </button>
+  </div>
+</div>
+<div *ngIf="!active" class="text-center">
+  <mat-spinner></mat-spinner>
+  <p>Eliminando grupo</p>
+</div>

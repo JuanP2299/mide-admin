@@ -1,0 +1,42 @@
+<div class="cont-grid-general">
+  <div class="cont-toolbar" *ngIf="user">
+    <mat-toolbar>
+      <img src="assets/images/logo.svg" (click)="goToHome()" />
+      <!--<span class="titulo-toolbar">TOT Admin</span>-->
+      <span class="spacer"></span>
+      <button *ngIf="user.isAdmin === 1" mat-button primarcolor="accent" (click)="goToPermisos()"
+        matTooltip="Administrar Permisos">
+        <mat-icon class="mat-24">settings</mat-icon>
+        Administrar Permisos
+      </button>
+      <button *ngIf="user.isAdmin === 1" mat-button primarcolor="accent" (click)="goToAddUser()"
+        matTooltip="Administrar Usuarios">
+        <mat-icon class="mat-24">account_circle</mat-icon>
+        Administrar Usuarios
+      </button>
+      <button *ngIf="user.isAdmin === 1" mat-button primarcolor="accent" (click)="goToDefaultSets()"
+        matTooltip="Sets por defecto">
+        <mat-icon class="mat-24">library_books</mat-icon>
+        Sets por defecto
+      </button>
+      <button mat-button primarcolor="accent" (click)="logOut()" matTooltip="Salir">
+        {{ user.name }}
+        <mat-icon class="mat-24">exit_to_app</mat-icon>
+      </button>
+    </mat-toolbar>
+  </div>
+  <div *ngIf="loadingService.loading > 0 && user">
+    <mat-progress-bar mode="query"></mat-progress-bar>
+    <div class="cont-loading">
+      <ngx-loading [show]="loadingService.loading > 0"
+        [config]="{ backdropBorderRadius: '2px', fullScreenBackdrop: true }"></ngx-loading>
+    </div>
+  </div>
+  <!--  <div class="breadcrumb" *ngIf="user">
+    <ul>
+      <li *ngFor="let item of route"><a [routerLink]="item.url">{{item.name}}</a></li>
+    </ul>
+  </div>-->
+  <router-outlet></router-outlet>
+</div>
+<footer>MIDE ADMIN V.1.8.1</footer>

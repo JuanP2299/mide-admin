@@ -1,0 +1,37 @@
+<div class="rendimineto-general bg-white">
+  <a href="javascript:history.back()" class="btn-volver"> <span class="material-icons"> arrow_back </span> volver </a>
+  <h2 class="titulo">Respuestas abiertas</h2>
+  <div class="usuario">
+    <div class="imagen-usuario">
+      <img src="{{user?.fotoPerfil}}" alt="Imagen usuario" class="rounded-circle" />
+    </div>
+    <div class="datos-usuario">
+      <p class="nombre-usuario">{{ user.name }}</p>
+      <p class="email-usuario">{{ user.email }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="cont-grid-general">
+  <div class="contenido" *ngFor="let question of openQuestions">
+    <div>
+      <!--Inicio Preguntas-->
+      <div class="flex-item" fxFlex="100%">
+        <mat-card class="tot-card">
+          <div>
+            <span class="date"> {{ question.fecha | date: 'dd/MM/yyyy HH:mm'}}</span>
+            <span [innerHTML]="question.enunciadoPregunta"></span>
+          </div>
+          <!--Detalle de Pregunta-->
+          <div class="cont-pregunta">
+            <h4 class="mat-subheader">
+              {{ question.contenido }}
+            </h4>
+          </div>
+          <!--Detalle de Pregunta-->
+        </mat-card>
+      </div>
+      <!--Fin Preguntas-->
+    </div>
+  </div>
+</div>
